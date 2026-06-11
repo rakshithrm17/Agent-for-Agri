@@ -1,0 +1,108 @@
+crop_name,crop_category,crop_sub_category,seasons_possible,duration_days_min,duration_days_max,yield_unit,price_unit,gdd_base_temp_c,volatility_class,is_perishable,major_states,yield_min_per_acre,yield_max_per_acre,price_min_inr_per_unit,price_max_inr_per_unit
+Paddy (Rice),Cereal,Staple,Kharif|Rabi,100,150,quintal,INR_per_quintal,10,LOW,false,"West Bengal,Punjab,Uttar Pradesh,Andhra Pradesh,Telangana,Karnataka,Tamil Nadu,Bihar,Odisha,Chhattisgarh",8,35,1400,3500
+Wheat,Cereal,Staple,Rabi,100,135,quintal,INR_per_quintal,4,LOW,false,"Punjab,Haryana,Uttar Pradesh,Madhya Pradesh,Rajasthan,Bihar,Gujarat",12,30,1500,3200
+Maize (Corn),Cereal,Staple,Kharif|Rabi|Summer,90,120,quintal,INR_per_quintal,10,MEDIUM,false,"Karnataka,Andhra Pradesh,Telangana,Rajasthan,Madhya Pradesh,Bihar,Uttar Pradesh,Himachal Pradesh",10,40,1200,2800
+Sorghum (Jowar),Cereal,Millet,Kharif|Rabi,90,120,quintal,INR_per_quintal,8,LOW,false,"Maharashtra,Karnataka,Andhra Pradesh,Telangana,Rajasthan,Madhya Pradesh",6,20,1400,2600
+Pearl Millet (Bajra),Cereal,Millet,Kharif,60,90,quintal,INR_per_quintal,10,LOW,false,"Rajasthan,Gujarat,Haryana,Uttar Pradesh,Maharashtra,Karnataka",4,18,1200,2400
+Finger Millet (Ragi),Cereal,Millet,Kharif|Rabi,90,120,quintal,INR_per_quintal,8,LOW,false,"Karnataka,Andhra Pradesh,Tamil Nadu,Odisha,Maharashtra",4,20,1500,3500
+Barley,Cereal,Staple,Rabi,90,120,quintal,INR_per_quintal,4,LOW,false,"Rajasthan,Uttar Pradesh,Madhya Pradesh,Haryana,Punjab",8,22,1100,2000
+Small Millet (Kodo),Cereal,Millet,Kharif,90,120,quintal,INR_per_quintal,10,LOW,false,"Madhya Pradesh,Chhattisgarh,Karnataka,Tamil Nadu",3,12,3000,6000
+Chickpea (Gram),Pulse,Legume,Rabi,90,120,quintal,INR_per_quintal,0,LOW,false,"Madhya Pradesh,Rajasthan,Maharashtra,Uttar Pradesh,Andhra Pradesh,Karnataka",3,10,3000,7500
+Pigeon Pea (Arhar/Tur),Pulse,Legume,Kharif,150,200,quintal,INR_per_quintal,10,MEDIUM,false,"Maharashtra,Karnataka,Andhra Pradesh,Telangana,Madhya Pradesh,Gujarat,Uttar Pradesh",2,8,4000,9000
+Lentil (Masur),Pulse,Legume,Rabi,90,120,quintal,INR_per_quintal,2,LOW,false,"Madhya Pradesh,Uttar Pradesh,Bihar,West Bengal,Rajasthan",2,8,3500,7000
+Green Gram (Moong),Pulse,Legume,Kharif|Rabi|Summer,60,75,quintal,INR_per_quintal,10,LOW,false,"Rajasthan,Maharashtra,Andhra Pradesh,Karnataka,Madhya Pradesh",1,6,5000,9000
+Black Gram (Urad),Pulse,Legume,Kharif|Rabi,70,85,quintal,INR_per_quintal,10,LOW,false,"Andhra Pradesh,Telangana,Madhya Pradesh,Uttar Pradesh,Rajasthan,Tamil Nadu",1,5,5000,9000
+Cowpea,Pulse,Legume,Kharif|Summer,60,90,quintal,INR_per_quintal,10,LOW,false,"Karnataka,Tamil Nadu,Andhra Pradesh,Telangana,Kerala,Maharashtra",1,5,4000,8000
+Horse Gram,Pulse,Legume,Rabi|Summer,75,90,quintal,INR_per_quintal,8,LOW,false,"Karnataka,Andhra Pradesh,Tamil Nadu,Maharashtra,Chhattisgarh",2,10,4000,9000
+Kidney Beans (Rajma),Pulse,Legume,Rabi,90,120,quintal,INR_per_quintal,5,LOW,false,"Jammu & Kashmir,Himachal Pradesh,Uttarakhand,Punjab,Haryana",2,8,6000,12000
+Field Pea,Pulse,Legume,Rabi,75,100,quintal,INR_per_quintal,5,LOW,false,"Uttar Pradesh,Madhya Pradesh,Bihar,West Bengal,Punjab",3,10,3000,6000
+Groundnut,Oilseed,Legume-Oil,Kharif|Rabi,110,135,quintal,INR_per_quintal,10,MEDIUM,false,"Gujarat,Andhra Pradesh,Tamil Nadu,Karnataka,Rajasthan,Maharashtra",5,18,4500,8000
+Soybean,Oilseed,Legume-Oil,Kharif,90,110,quintal,INR_per_quintal,10,MEDIUM,false,"Madhya Pradesh,Maharashtra,Rajasthan,Karnataka,Andhra Pradesh",3,12,3500,6500
+Mustard (Rapeseed),Oilseed,Oil,Rabi,90,120,quintal,INR_per_quintal,5,LOW,false,"Rajasthan,Haryana,Madhya Pradesh,Uttar Pradesh,West Bengal",4,15,4000,7500
+Sunflower,Oilseed,Oil,Rabi|Summer,90,110,quintal,INR_per_quintal,6,MEDIUM,false,"Karnataka,Andhra Pradesh,Telangana,Maharashtra,Tamil Nadu",3,14,4000,7500
+Sesame (Til),Oilseed,Oil,Kharif|Rabi|Summer,70,90,quintal,INR_per_quintal,15,MEDIUM,false,"West Bengal,Uttar Pradesh,Gujarat,Rajasthan,Madhya Pradesh,Andhra Pradesh",1,5,8000,15000
+Linseed (Flax),Oilseed,Oil,Rabi,110,140,quintal,INR_per_quintal,5,LOW,false,"Madhya Pradesh,Uttar Pradesh,Bihar,Chhattisgarh,Odisha",1,5,5000,9000
+Castor,Oilseed,Oil,Kharif|Rabi,150,180,quintal,INR_per_quintal,10,MEDIUM,false,"Gujarat,Rajasthan,Andhra Pradesh,Telangana,Karnataka",5,20,5000,10000
+Safflower,Oilseed,Oil,Rabi,120,150,quintal,INR_per_quintal,5,LOW,false,"Maharashtra,Karnataka,Andhra Pradesh,Madhya Pradesh,Gujarat",2,8,4000,8000
+Sugarcane,Cash Crop,Sugar,Annual,300,365,tonne,INR_per_tonne,12,LOW,false,"Uttar Pradesh,Maharashtra,Karnataka,Tamil Nadu,Bihar,Andhra Pradesh,Gujarat",150,450,2800,4200
+Cotton,Cash Crop,Fiber,Kharif,180,200,quintal,INR_per_quintal,15,HIGH,false,"Gujarat,Maharashtra,Telangana,Andhra Pradesh,Rajasthan,Madhya Pradesh,Karnataka",3,12,5000,10000
+Jute,Cash Crop,Fiber,Kharif,100,120,quintal,INR_per_quintal,15,MEDIUM,false,"West Bengal,Bihar,Odisha,Assam,Meghalaya",15,40,2000,4000
+Tobacco,Cash Crop,Commercial,Rabi|Summer,100,140,quintal,INR_per_quintal,15,MEDIUM,false,"Andhra Pradesh,Telangana,Karnataka,Gujarat,West Bengal",4,12,8000,20000
+Tea,Plantation,Beverage,Annual,0,0,kg,INR_per_kg,10,LOW,false,"Assam,West Bengal,Tamil Nadu,Kerala,Karnataka,Himachal Pradesh",200,800,100,300
+Coffee (Arabica),Plantation,Beverage,Annual,0,0,kg,INR_per_kg,10,MEDIUM,false,"Karnataka,Kerala,Tamil Nadu",200,600,200,500
+Coffee (Robusta),Plantation,Beverage,Annual,0,0,kg,INR_per_kg,15,MEDIUM,false,"Kerala,Karnataka,Tamil Nadu",250,700,150,400
+Rubber,Plantation,Industrial,Annual,0,0,kg,INR_per_kg,20,MEDIUM,false,"Kerala,Tamil Nadu,Karnataka,Assam,Tripura",400,1200,100,250
+Coconut,Plantation,Multi-use,Annual,0,0,nut,INR_per_1000_nuts,18,LOW,false,"Kerala,Tamil Nadu,Karnataka,Andhra Pradesh,West Bengal",8000,25000,8000,20000
+Areca Nut (Betel Nut),Plantation,Stimulant,Annual,0,0,quintal,INR_per_quintal,20,HIGH,false,"Karnataka,Kerala,Assam,West Bengal,Tamil Nadu",4,16,20000,80000
+Cashew,Plantation,Nut,Summer,0,0,quintal,INR_per_quintal,20,MEDIUM,false,"Kerala,Goa,Karnataka,Maharashtra,Odisha,Andhra Pradesh",2,8,15000,40000
+Tomato,Vegetable,Solanaceous,Kharif|Rabi|Summer,75,100,quintal,INR_per_quintal,10,HIGH,true,"Andhra Pradesh,Karnataka,Maharashtra,Madhya Pradesh,West Bengal,Odisha",40,200,100,30000
+Onion,Vegetable,Bulb,Rabi|Kharif,90,120,quintal,INR_per_quintal,7,HIGH,true,"Maharashtra,Madhya Pradesh,Karnataka,Gujarat,Rajasthan,Bihar",30,150,200,8000
+Potato,Vegetable,Tuber,Rabi,75,100,quintal,INR_per_quintal,7,MEDIUM,false,"Uttar Pradesh,West Bengal,Bihar,Gujarat,Punjab,Madhya Pradesh",60,250,400,4000
+Brinjal (Eggplant),Vegetable,Solanaceous,Kharif|Rabi|Summer,75,90,quintal,INR_per_quintal,15,MEDIUM,true,"West Bengal,Odisha,Bihar,Andhra Pradesh,Karnataka,Gujarat",80,250,500,4000
+Cauliflower,Vegetable,Cole,Rabi,60,90,quintal,INR_per_quintal,5,MEDIUM,true,"West Bengal,Bihar,Uttar Pradesh,Maharashtra,Odisha",80,250,500,3000
+Cabbage,Vegetable,Cole,Rabi,60,90,quintal,INR_per_quintal,5,LOW,true,"West Bengal,Uttar Pradesh,Bihar,Odisha,Assam,Maharashtra",100,300,400,2500
+Peas (Garden),Vegetable,Legume,Rabi,60,90,quintal,INR_per_quintal,5,LOW,true,"Uttar Pradesh,Himachal Pradesh,Punjab,Haryana,Madhya Pradesh",30,100,1000,5000
+Okra (Bhindi/Lady Finger),Vegetable,Fruiting,Kharif|Summer,45,60,quintal,INR_per_quintal,15,MEDIUM,true,"India-wide",40,150,500,4000
+Bitter Gourd (Karela),Vegetable,Cucurbit,Kharif|Summer,55,70,quintal,INR_per_quintal,15,MEDIUM,true,"Uttar Pradesh,Bihar,West Bengal,Andhra Pradesh,Karnataka",30,100,600,4000
+Bottle Gourd (Lauki),Vegetable,Cucurbit,Kharif|Summer,55,70,quintal,INR_per_quintal,15,LOW,true,"India-wide",50,200,400,2500
+Ridge Gourd,Vegetable,Cucurbit,Kharif|Summer,50,65,quintal,INR_per_quintal,15,LOW,true,"India-wide",40,150,500,3000
+Snake Gourd,Vegetable,Cucurbit,Kharif|Summer,55,70,quintal,INR_per_quintal,18,LOW,true,"Kerala,Tamil Nadu,Karnataka,Andhra Pradesh",40,160,400,3000
+Cucumber,Vegetable,Cucurbit,Kharif|Summer,45,60,quintal,INR_per_quintal,15,LOW,true,"India-wide",60,200,400,2500
+Pumpkin,Vegetable,Cucurbit,Kharif|Summer,90,120,quintal,INR_per_quintal,15,LOW,false,"India-wide",60,250,300,2000
+Watermelon,Vegetable,Cucurbit,Summer,75,95,quintal,INR_per_quintal,18,MEDIUM,true,"Karnataka,Andhra Pradesh,Telangana,Uttar Pradesh,Maharashtra",100,350,400,2000
+Muskmelon (Kharbuja),Vegetable,Cucurbit,Summer,75,90,quintal,INR_per_quintal,18,MEDIUM,true,"Karnataka,Maharashtra,Uttar Pradesh,Rajasthan",80,300,500,2500
+Carrot,Vegetable,Root,Rabi,75,100,quintal,INR_per_quintal,7,LOW,false,"Rajasthan,Haryana,Uttarakhand,Punjab,Himachal Pradesh",80,250,600,3000
+Radish,Vegetable,Root,Rabi,25,40,quintal,INR_per_quintal,7,LOW,true,"India-wide",60,200,400,2000
+Beetroot,Vegetable,Root,Rabi,50,70,quintal,INR_per_quintal,7,LOW,false,"Karnataka,Maharashtra,West Bengal,Punjab",40,150,800,3500
+Spinach,Vegetable,Leafy,Annual,25,40,quintal,INR_per_quintal,5,LOW,true,"India-wide",30,100,400,2000
+Fenugreek (Methi),Vegetable,Leafy-Spice,Rabi,25,40,quintal,INR_per_quintal,7,LOW,true,"Rajasthan,Gujarat,Madhya Pradesh,Uttar Pradesh",20,80,600,3500
+Coriander (Dhaniya),Vegetable,Leafy-Spice,Rabi,25,40,quintal,INR_per_quintal,7,MEDIUM,true,"Rajasthan,Madhya Pradesh,Gujarat,Uttar Pradesh",15,60,800,6000
+Garlic,Vegetable,Bulb,Rabi,130,150,quintal,INR_per_quintal,7,MEDIUM,false,"Madhya Pradesh,Rajasthan,Gujarat,Uttar Pradesh,Odisha",20,80,4000,20000
+Ginger,Spice,Rhizome,Kharif,180,210,quintal,INR_per_quintal,15,HIGH,false,"Meghalaya,Arunachal Pradesh,Odisha,Assam,Himachal Pradesh,Karnataka,Kerala",30,120,1500,8000
+Chilli (Red/Green),Spice,Solanaceous,Kharif|Rabi,120,180,quintal,INR_per_quintal,15,HIGH,true,"Andhra Pradesh,Telangana,Maharashtra,Karnataka,Odisha",20,80,2000,20000
+Capsicum (Bell Pepper),Vegetable,Solanaceous,Rabi|Summer,75,100,quintal,INR_per_quintal,10,MEDIUM,true,"Himachal Pradesh,Karnataka,Maharashtra,Uttar Pradesh",20,80,1500,8000
+Drumstick (Moringa),Vegetable,Tree,Annual,0,0,quintal,INR_per_quintal,20,LOW,true,"Tamil Nadu,Andhra Pradesh,Karnataka,Maharashtra",20,80,1000,5000
+Cluster Beans (Gawar),Vegetable,Legume,Kharif|Summer,60,80,quintal,INR_per_quintal,15,LOW,true,"Rajasthan,Gujarat,Haryana,Uttar Pradesh",20,80,600,3000
+French Beans,Vegetable,Legume,Rabi|Summer,55,70,quintal,INR_per_quintal,10,MEDIUM,true,"Himachal Pradesh,Karnataka,Tamil Nadu,Maharashtra",30,100,1000,5000
+Colocasia (Arbi/Taro),Vegetable,Tuber,Kharif,150,180,quintal,INR_per_quintal,15,LOW,false,"West Bengal,Kerala,Assam,Andhra Pradesh,Karnataka",30,120,1000,4000
+Sweet Potato,Vegetable,Tuber,Kharif,90,120,quintal,INR_per_quintal,15,LOW,false,"Odisha,West Bengal,Bihar,Uttar Pradesh",40,150,800,3500
+Yam (Suran),Vegetable,Tuber,Kharif,180,210,quintal,INR_per_quintal,15,LOW,false,"Maharashtra,Gujarat,Karnataka,Andhra Pradesh",30,100,1200,5000
+Turmeric,Spice,Rhizome,Kharif,210,270,quintal,INR_per_quintal,18,MEDIUM,false,"Andhra Pradesh,Telangana,Tamil Nadu,Karnataka,Odisha,Maharashtra",15,50,4000,15000
+Cardamom (Small),Spice,Rhizome,Annual,0,0,kg,INR_per_kg,15,HIGH,false,"Kerala,Karnataka,Tamil Nadu",50,200,700,3000
+Black Pepper,Spice,Vine,Annual,0,0,kg,INR_per_kg,22,HIGH,false,"Kerala,Karnataka,Tamil Nadu",100,400,300,1000
+Cumin (Jeera),Spice,Seed,Rabi,90,120,quintal,INR_per_quintal,5,HIGH,false,"Rajasthan,Gujarat",2,8,8000,40000
+Coriander Seed,Spice,Seed,Rabi,75,100,quintal,INR_per_quintal,7,MEDIUM,false,"Rajasthan,Madhya Pradesh,Gujarat",2,8,5000,15000
+Fennel (Saunf),Spice,Seed,Rabi,140,160,quintal,INR_per_quintal,7,MEDIUM,false,"Rajasthan,Gujarat,Uttar Pradesh,Haryana",2,8,8000,20000
+Ajwain (Carom Seeds),Spice,Seed,Rabi,90,120,quintal,INR_per_quintal,7,MEDIUM,false,"Rajasthan,Gujarat,Madhya Pradesh",1,5,8000,25000
+Vanilla,Spice,Vine,Annual,0,0,kg,INR_per_kg,20,HIGH,false,"Kerala,Karnataka,Tamil Nadu",0.5,3,2000,8000
+Nutmeg,Spice,Tree,Annual,0,0,kg,INR_per_kg,22,MEDIUM,false,"Kerala,Tamil Nadu,Karnataka",20,80,400,1200
+Mango,Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,20,MEDIUM,true,"Uttar Pradesh,Andhra Pradesh,Telangana,Bihar,Karnataka,Gujarat,Tamil Nadu",20,100,1000,8000
+Banana,Fruit,Tropical,Annual,270,365,quintal,INR_per_quintal,18,LOW,true,"Andhra Pradesh,Tamil Nadu,Maharashtra,Karnataka,Gujarat,Bihar,Madhya Pradesh",100,400,500,3000
+Grapes,Fruit,Temperate-Tropical,Annual,0,0,quintal,INR_per_quintal,10,HIGH,true,"Maharashtra,Karnataka,Andhra Pradesh,Tamil Nadu",80,350,1500,8000
+Orange,Fruit,Citrus,Annual,0,0,quintal,INR_per_quintal,10,MEDIUM,true,"Maharashtra,Madhya Pradesh,Rajasthan,Assam,Meghalaya,Karnataka",30,120,1500,6000
+Sweet Lime (Mosambi),Fruit,Citrus,Annual,0,0,quintal,INR_per_quintal,10,MEDIUM,true,"Maharashtra,Andhra Pradesh,Karnataka,Gujarat",40,150,1200,5000
+Pomegranate,Fruit,Sub-tropical,Annual,0,0,quintal,INR_per_quintal,18,MEDIUM,false,"Maharashtra,Karnataka,Gujarat,Andhra Pradesh,Rajasthan",20,80,2000,10000
+Papaya,Fruit,Tropical,Annual,240,360,quintal,INR_per_quintal,18,LOW,true,"Andhra Pradesh,Karnataka,Gujarat,West Bengal,Assam",100,400,400,2000
+Guava,Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,18,LOW,true,"Uttar Pradesh,Maharashtra,Bihar,Andhra Pradesh,Karnataka",40,180,800,4000
+Sapota (Chikoo),Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,20,LOW,true,"Gujarat,Maharashtra,Karnataka,Tamil Nadu,Andhra Pradesh",30,120,1500,6000
+Jackfruit,Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,22,LOW,true,"Kerala,Tamil Nadu,Karnataka,West Bengal,Assam",40,200,800,4000
+Pineapple,Fruit,Tropical,Annual,360,540,quintal,INR_per_quintal,20,MEDIUM,true,"Assam,Meghalaya,Tripura,West Bengal,Kerala,Karnataka",50,200,600,3000
+Apple,Fruit,Temperate,Annual,0,0,quintal,INR_per_quintal,4,MEDIUM,false,"Himachal Pradesh,Jammu & Kashmir,Uttarakhand,Arunachal Pradesh",30,120,2000,12000
+Litchi,Fruit,Sub-tropical,Annual,0,0,quintal,INR_per_quintal,8,HIGH,true,"Bihar,West Bengal,Uttar Pradesh,Jharkhand,Assam",20,80,2000,12000
+Plum,Fruit,Temperate,Annual,0,0,quintal,INR_per_quintal,5,MEDIUM,false,"Himachal Pradesh,Jammu & Kashmir,Uttarakhand,Punjab",20,80,2000,8000
+Peach,Fruit,Temperate,Annual,0,0,quintal,INR_per_quintal,5,MEDIUM,true,"Himachal Pradesh,Jammu & Kashmir,Uttarakhand",15,60,2000,8000
+Strawberry,Fruit,Berry,Rabi|Summer,90,120,quintal,INR_per_quintal,5,HIGH,true,"Himachal Pradesh,Maharashtra,Uttar Pradesh,West Bengal",8,30,5000,25000
+Amla (Indian Gooseberry),Fruit,Sub-tropical,Annual,0,0,quintal,INR_per_quintal,15,LOW,false,"Uttar Pradesh,Madhya Pradesh,Gujarat,Rajasthan,Andhra Pradesh",20,80,600,3000
+Tamarind,Fruit,Tropical Tree,Annual,0,0,quintal,INR_per_quintal,20,LOW,false,"Karnataka,Andhra Pradesh,Telangana,Tamil Nadu,Maharashtra",10,50,2000,8000
+Dragon Fruit,Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,18,HIGH,false,"Karnataka,Andhra Pradesh,Gujarat,Maharashtra,Tamil Nadu",5,30,5000,25000
+Avocado,Fruit,Tropical,Annual,0,0,quintal,INR_per_quintal,15,HIGH,false,"Tamil Nadu,Kerala,Karnataka,Maharashtra",4,20,8000,30000
+Kiwi,Fruit,Temperate,Annual,0,0,quintal,INR_per_quintal,5,HIGH,false,"Himachal Pradesh,Uttarakhand,Arunachal Pradesh,Jammu & Kashmir",5,25,5000,20000
+Aloe Vera,Medicinal,Succulent,Annual,0,0,quintal,INR_per_quintal,18,MEDIUM,false,"Rajasthan,Gujarat,Andhra Pradesh,Maharashtra",20,80,500,3000
+Stevia,Medicinal,Herb,Annual,0,0,kg,INR_per_kg,10,MEDIUM,false,"Maharashtra,Karnataka,Himachal Pradesh,Uttarakhand",200,800,100,500
+Lemongrass,Medicinal,Grass,Annual,0,0,kg,INR_per_kg,18,LOW,false,"Kerala,Karnataka,Assam,Uttar Pradesh",100,400,50,200
+Brahmi,Medicinal,Herb,Annual,0,0,kg,INR_per_kg,15,LOW,false,"Rajasthan,Andhra Pradesh,Karnataka,Kerala",20,80,200,800
+Ashwagandha,Medicinal,Shrub,Annual,150,180,quintal,INR_per_quintal,10,MEDIUM,false,"Madhya Pradesh,Rajasthan,Gujarat,Uttar Pradesh",3,12,5000,20000
+Isabgol (Psyllium),Medicinal,Herb,Rabi,90,110,quintal,INR_per_quintal,7,MEDIUM,false,"Gujarat,Rajasthan,Haryana",2,8,8000,20000
+Senna,Medicinal,Shrub,Annual,90,120,quintal,INR_per_quintal,20,LOW,false,"Tamil Nadu,Andhra Pradesh,Gujarat",5,20,3000,10000
+Jatropha,Bio-energy,Shrub,Annual,0,0,quintal,INR_per_quintal,18,LOW,false,"Andhra Pradesh,Maharashtra,Gujarat,Rajasthan",5,20,2000,5000
+Bamboo,Plantation,Grass,Annual,0,0,tonne,INR_per_tonne,15,LOW,false,"Assam,Meghalaya,Tripura,Mizoram,Maharashtra,Karnataka",5,30,2000,8000

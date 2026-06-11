@@ -1,0 +1,36 @@
+district_name,taluk,state,latitude,longitude,elevation_m,soil_type_primary,major_crops,agro_climatic_zone
+Mandya,Mandya,Karnataka,12.5234,76.8961,680,Red Sandy Loam,"Paddy,Sugarcane,Ragi,Maize,Tomato,Groundnut",South Karnataka Transition Zone
+Mandya,Maddur,Karnataka,12.5807,77.0466,705,Red Sandy Loam,"Paddy,Ragi,Maize,Mulberry",South Karnataka Transition Zone
+Mandya,Malavalli,Karnataka,12.3847,77.0607,720,Red Laterite,"Paddy,Ragi,Maize,Horsegram",South Karnataka Transition Zone
+Mandya,Nagamangala,Karnataka,12.8156,76.7497,770,Black Cotton Soil,"Paddy,Sunflower,Groundnut,Horsegram",South Karnataka Transition Zone
+Mandya,Pandavapura,Karnataka,12.4872,76.6839,660,Red Sandy Loam,"Paddy,Sugarcane,Ragi",South Karnataka Transition Zone
+Mandya,Shrirangapattana,Karnataka,12.4165,76.6951,650,Alluvial,"Paddy,Sugarcane,Banana,Coconut",South Karnataka Transition Zone
+Mandya,Krishnarajapete,Karnataka,12.6585,76.3887,820,Red Laterite,"Paddy,Ragi,Horsegram,Groundnut",South Karnataka Transition Zone
+Mysuru,Mysuru,Karnataka,12.2958,76.6394,770,Red Sandy Loam,"Paddy,Maize,Potato,Tomato,Onion",South Karnataka Zone
+Bengaluru Rural,Doddaballapur,Karnataka,13.2941,77.5354,890,Red Sandy Loam,"Tomato,Onion,Potato,Paddy",Eastern Dry Zone
+Hassan,Hassan,Karnataka,13.0068,76.0990,980,Red Sandy Loam,"Paddy,Potato,Ginger,Coffee",Hilly Zone
+Shivamogga,Shivamogga,Karnataka,13.9299,75.5681,570,Laterite,"Paddy,Sugarcane,Areca Nut,Banana",Malnad Zone
+Haveri,Haveri,Karnataka,14.7939,75.4007,595,Medium Black,"Cotton,Maize,Sunflower,Paddy",North Karnataka Zone
+Dharwad,Dharwad,Karnataka,15.4589,75.0078,745,Medium Black,"Cotton,Jowar,Chickpea,Groundnut",North Karnataka Zone
+Belagavi,Belagavi,Karnataka,15.8497,74.4977,760,Medium Black,"Sugarcane,Paddy,Soybean,Cotton",North Karnataka Zone
+Vijayapura,Vijayapura,Karnataka,16.8302,75.7151,595,Deep Black,"Jowar,Cotton,Groundnut,Chickpea",North East Karnataka Dry Zone
+Kalaburagi,Kalaburagi,Karnataka,17.3297,76.8175,460,Deep Black,"Tur/Arhar,Cotton,Jowar,Groundnut",North East Karnataka Dry Zone
+Raichur,Raichur,Karnataka,16.2160,77.3566,410,Deep Black,"Paddy,Cotton,Jowar,Maize",North East Karnataka Dry Zone
+Tumakuru,Tumakuru,Karnataka,13.3409,77.1017,847,Red Sandy Loam,"Ragi,Groundnut,Coconut,Sunflower",Eastern Dry Zone
+Kolar,Kolar,Karnataka,13.1358,78.1290,908,Red Loamy,"Tomato,Paddy,Ragi,Mango",Eastern Dry Zone
+Chikkamagaluru,Chikkamagaluru,Karnataka,13.3161,75.7720,1090,Laterite,"Coffee,Paddy,Areca Nut,Ginger",Malnad Zone
+Uttara Kannada,Karwar,Karnataka,14.8013,74.1240,10,Laterite,"Paddy,Coconut,Cashew,Areca Nut",Coastal Zone
+Dakshina Kannada,Mangaluru,Karnataka,12.9141,74.8560,18,Laterite,"Paddy,Coconut,Cashew,Banana",Coastal Zone
+Udupi,Udupi,Karnataka,13.3409,74.7421,10,Laterite,"Paddy,Coconut,Cashew,Banana",Coastal Zone
+Chitradurga,Chitradurga,Karnataka,14.2251,76.3980,800,Red Sandy Loam,"Groundnut,Sunflower,Horsegram,Ragi",Eastern Dry Zone
+Davangere,Davangere,Karnataka,14.4644,75.9218,606,Red Sandy Loam,"Paddy,Cotton,Maize,Sunflower",Eastern Dry Zone
+Koppal,Koppal,Karnataka,15.3524,76.1547,490,Deep Black,"Cotton,Jowar,Paddy,Sunflower",North East Karnataka Dry Zone
+Gadag,Gadag,Karnataka,15.4325,75.6258,665,Medium Black,"Cotton,Jowar,Groundnut,Chickpea",North Karnataka Zone
+Bagalkote,Bagalkote,Karnataka,16.1862,75.6961,550,Deep Black,"Sugarcane,Jowar,Groundnut,Cotton",North Karnataka Zone
+Yadgir,Yadgir,Karnataka,16.7689,77.1349,450,Deep Black,"Tur/Arhar,Cotton,Jowar,Paddy",North East Karnataka Dry Zone
+Chikkaballapur,Chikkaballapur,Karnataka,13.4351,77.7289,886,Red Sandy Loam,"Tomato,Paddy,Ragi,Mango",Eastern Dry Zone
+Ramanagara,Ramanagara,Karnataka,12.7162,77.2802,790,Red Sandy Loam,"Mulberry,Paddy,Ragi,Coconut",South Karnataka Transition Zone
+Chamarajanagar,Chamarajanagar,Karnataka,11.9214,76.9432,800,Red Sandy Loam,"Paddy,Ragi,Banana,Coconut",South Karnataka Transition Zone
+Bidar,Bidar,Karnataka,17.9104,77.5199,670,Medium Black,"Tur/Arhar,Cotton,Soybean,Jowar",North East Karnataka Dry Zone
+Ballari,Ballari,Karnataka,15.1394,76.9214,450,Deep Black,"Cotton,Paddy,Jowar,Sunflower",North East Karnataka Dry Zone
+Kodagu,Madikeri,Karnataka,12.4244,75.7382,1080,Laterite,"Coffee,Paddy,Ginger,Black Pepper",Malnad Zone

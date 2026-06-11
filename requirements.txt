@@ -1,0 +1,45 @@
+# ─────────────────────────────────────────────
+# Crop Intelligence Agent — Production Dependencies
+# All versions pinned per spec
+# ─────────────────────────────────────────────
+
+# Data manipulation
+pandas==2.2.3
+numpy==1.26.4
+
+# Machine Learning — Yield model
+xgboost==2.0.3
+scikit-learn==1.4.2
+optuna==3.5.0
+shap==0.45.0
+
+# Machine Learning — Price forecasting
+prophet==1.1.5
+
+# Machine Learning — Crop ranking
+lightgbm==4.3.0
+
+# Database
+sqlalchemy==2.0.30
+alembic==1.13.1
+
+# Job scheduling
+apscheduler==3.10.4
+
+# Structured logging
+structlog==24.1.0
+
+# Dashboard
+streamlit==1.32.2
+plotly==5.20.0
+folium==0.16.0
+streamlit-folium==0.18.0
+
+# HTTP requests
+requests==2.31.0
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Feedparser for RSS news
+feedparser==6.0.11

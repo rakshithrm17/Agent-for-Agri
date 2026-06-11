@@ -1,0 +1,65 @@
+name: Release — Auto-tag and create GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          # Get commits since last tag
+          PREV_TAG=$(git tag --sort=-version:refname | sed -n '2p')
+          if [ -z "$PREV_TAG" ]; then
+            NOTES="Initial release of Crop Intelligence Agent."
+          else
+            NOTES=$(git log ${PREV_TAG}..HEAD --oneline --no-merges | head -50)
+          fi
+          echo "NOTES<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: "Crop Intelligence Agent ${{ steps.version.outputs.VERSION }}"
+          body: |
+            ## 🌾 Crop Intelligence Agent ${{ steps.version.outputs.VERSION }}
+
+            ### Changes in this release
+            ${{ steps.notes.outputs.NOTES }}
+
+            ### Quick Start
+            ```bash
+            git clone https://github.com/${{ github.repository }}.git
+            cd Agent-for-Agri
+            make setup
+            make run-dashboard
+            ```
+
+            ### What's Inside
+            - **Layer 1**: Data ingestion from 16 free official sources
+            - **Layer 2**: 46-feature engineering pipeline with anti-hallucination validation
+            - **Layer 3**: XGBoost yield + Prophet price + LightGBM ranking models
+            - **Layer 4**: Prediction engine with risk scoring and verified insights
+            - **Layer 5**: Streamlit dashboard (6 pages, farmer-ready)
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.VERSION, 'alpha') || contains(steps.version.outputs.VERSION, 'beta') || contains(steps.version.outputs.VERSION, 'rc') }}

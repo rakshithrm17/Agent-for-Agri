@@ -1,0 +1,100 @@
+# ─────────────────────────────────────────────
+# Crop Intelligence Agent — .gitignore
+# ─────────────────────────────────────────────
+
+# Python virtual environment — NEVER commit
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+
+# Data files — NEVER commit raw collected data
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.pdf
+*.json.gz
+
+# Exception: seed/reference data IS committed (it is code, not collected data)
+# This includes the crop catalog, district lists, and crop calendars
+!data/seeds/
+!data/seeds/**
+
+# Database files — NEVER commit local DB
+*.db
+*.sqlite
+*.sqlite3
+
+# ML model artifacts — large binary files
+crop_agent/models/
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.onnx
+
+# Logs — auto-generated, not for version control
+crop_agent/logs/
+logs/
+*.log
+
+# Environment variables — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+.project
+.pydevproject
+
+# Type checking cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Test & coverage artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Ruff / linting cache
+.ruff_cache/
+
+# Jupyter notebooks (not needed in this project)
+.ipynb_checkpoints/
+
+# Alembic — only commit migration scripts, not cache
+alembic/__pycache__/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
