@@ -188,7 +188,11 @@ def load_ndvi_all():
                                      .str.replace("__mock_seasonal","",regex=False)
         df["district"] = df["taluk"].map(TALUK_TO_DISTRICT).fillna("Other")
         return df
-    except: return pd.DataFrame()
+    except Exception as e:
+        st.error(f"EXCEPTION IN load_ndvi_all: {e}")
+        import traceback
+        st.code(traceback.format_exc())
+        return pd.DataFrame(columns=["sensing_date", "block_id", "ndvi", "evi", "cloud_cover_pct", "is_mock_data", "taluk", "district"])
 
 @st.cache_data(ttl=300)
 def load_weather_taluk(taluk):
@@ -199,7 +203,11 @@ def load_weather_taluk(taluk):
             engine)
         df["date"] = pd.to_datetime(df["date"])
         return df
-    except: return pd.DataFrame()
+    except Exception as e:
+        st.error(f"EXCEPTION IN load_weather_taluk: {e}")
+        import traceback
+        st.code(traceback.format_exc())
+        return pd.DataFrame(columns=["date", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct", "wind_kmh", "solar_radiation", "et0_mm", "taluk", "district"])
 
 @st.cache_data(ttl=300)
 def load_weather_recent(taluk, days=90):
@@ -211,7 +219,11 @@ def load_weather_recent(taluk, days=90):
             engine)
         df["date"] = pd.to_datetime(df["date"])
         return df.sort_values("date")
-    except: return pd.DataFrame()
+    except Exception as e:
+        st.error(f"EXCEPTION IN load_weather_recent: {e}")
+        import traceback
+        st.code(traceback.format_exc())
+        return pd.DataFrame(columns=["date", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct", "wind_kmh", "taluk", "district"])
 
 @st.cache_data(ttl=300)
 def load_weather_multi_taluks(taluks):
@@ -223,7 +235,11 @@ def load_weather_multi_taluks(taluks):
             engine)
         df["date"] = pd.to_datetime(df["date"])
         return df
-    except: return pd.DataFrame()
+    except Exception as e:
+        st.error(f"EXCEPTION IN load_weather_multi_taluks: {e}")
+        import traceback
+        st.code(traceback.format_exc())
+        return pd.DataFrame(columns=["date", "taluk", "district", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct"])
 
 @st.cache_data(ttl=300)
 def load_seasonal_rain_compare(taluk):
@@ -236,7 +252,13 @@ def load_seasonal_rain_compare(taluk):
         df["month"] = df["date"].dt.month
         df["year"]  = df["date"].dt.year
         return df
-    except: return pd.DataFrame()
+    except Exception as e:
+        st.error(f"EXCEPTION IN load_seasonal_rain_compare: {e}")
+        import traceback
+        st.code(traceback.format_exc())
+        return pd.DataFrame(columns=["date", "rainfall_mm", "month", "year"])
+
+
 
 @st.cache_data(ttl=600)
 def get_forecast(lat, lon):
