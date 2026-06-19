@@ -189,9 +189,8 @@ def load_ndvi_all():
         df["district"] = df["taluk"].map(TALUK_TO_DISTRICT).fillna("Other")
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_ndvi_all: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_ndvi_all: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["sensing_date", "block_id", "ndvi", "evi", "cloud_cover_pct", "is_mock_data", "taluk", "district"])
 
 @st.cache_data(ttl=300)
@@ -204,9 +203,8 @@ def load_weather_taluk(taluk):
         df["date"] = pd.to_datetime(df["date"])
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_weather_taluk: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_weather_taluk: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["date", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct", "wind_kmh", "solar_radiation", "et0_mm", "taluk", "district"])
 
 @st.cache_data(ttl=300)
@@ -220,9 +218,8 @@ def load_weather_recent(taluk, days=90):
         df["date"] = pd.to_datetime(df["date"])
         return df.sort_values("date")
     except Exception as e:
-        st.error(f"EXCEPTION IN load_weather_recent: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_weather_recent: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["date", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct", "wind_kmh", "taluk", "district"])
 
 @st.cache_data(ttl=300)
@@ -236,9 +233,8 @@ def load_weather_multi_taluks(taluks):
         df["date"] = pd.to_datetime(df["date"])
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_weather_multi_taluks: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_weather_multi_taluks: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["date", "taluk", "district", "rainfall_mm", "temp_max_c", "temp_min_c", "humidity_pct"])
 
 @st.cache_data(ttl=300)
@@ -253,9 +249,8 @@ def load_seasonal_rain_compare(taluk):
         df["year"]  = df["date"].dt.year
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_seasonal_rain_compare: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_seasonal_rain_compare: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["date", "rainfall_mm", "month", "year"])
 
 
@@ -267,9 +262,8 @@ def load_groundwater_taluk(taluk):
             engine)
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_groundwater_taluk: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_groundwater_taluk: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["year", "depth_m"])
 
 
@@ -281,9 +275,8 @@ def load_groundwater_district(district):
             engine)
         return df
     except Exception as e:
-        st.error(f"EXCEPTION IN load_groundwater_district: {e}")
-        import traceback
-        st.code(traceback.format_exc())
+        import sys
+        print(f"ERROR IN load_groundwater_district: {e}", file=sys.stderr)
         return pd.DataFrame(columns=["taluk", "year", "depth_m"])
 
 
@@ -489,6 +482,11 @@ if page == "🌅 Morning Briefing":
 
     # Rain this month
     wdf_all = load_weather_taluk(sel_taluk)
+    is_weather_fallback = False
+    if wdf_all.empty:
+        wdf_all = load_weather_taluk("Mandya")
+        is_weather_fallback = True
+
     if not wdf_all.empty:
         this_month_rain = wdf_all[wdf_all["date"].dt.month==month]["rainfall_mm"].sum()
         last_yr_same    = wdf_all[
@@ -498,6 +496,9 @@ if page == "🌅 Morning Briefing":
         rain_diff_pct = ((this_month_rain - last_yr_same)/max(last_yr_same,1)*100) if last_yr_same else 0
     else:
         this_month_rain, last_yr_same, rain_diff_pct = 0, 0, 0
+
+    if is_weather_fallback:
+        st.info(f"💡 Historical weather records are currently optimized for Mandya district. Showing regional representative data for {sel_taluk}.")
 
     # ── Top KPI strip ──────────────────────────────────────────────
     c1,c2,c3,c4,c5 = st.columns(5)
@@ -619,6 +620,14 @@ elif page == "🌿 My Field":
     ndvi_df = load_ndvi_all()
     t_ndvi  = ndvi_df[(ndvi_df["taluk"]==sel_taluk)&(ndvi_df["is_mock_data"]==False)]
     wdf     = load_weather_taluk(sel_taluk)
+    is_weather_fallback = False
+    if wdf.empty:
+        wdf = load_weather_taluk("Mandya")
+        is_weather_fallback = True
+
+    if is_weather_fallback:
+        st.info(f"💡 Historical weather records are currently optimized for Mandya district. Showing regional representative data for {sel_taluk}.")
+
     forecast = get_forecast(lat, lon)
 
     col1, col2 = st.columns([1,1])
@@ -779,9 +788,13 @@ elif page == "🌧️ Rain & Weather":
     st.markdown("---")
 
     wdf = load_weather_taluk(sel_taluk)
+    is_weather_fallback = False
     if wdf.empty:
-        st.warning(f"No weather data for {sel_taluk}. Only Mandya taluks have 20-year data currently.")
-        st.stop()
+        wdf = load_weather_taluk("Mandya")
+        is_weather_fallback = True
+
+    if is_weather_fallback:
+        st.info(f"💡 Historical 20-year weather data is currently optimized for Mandya district. Showing regional representative data for {sel_taluk}.")
 
     wdf["year"]  = wdf["date"].dt.year
     wdf["month"] = wdf["date"].dt.month
@@ -939,8 +952,17 @@ elif page == "🚰 Groundwater":
     gw_df = load_groundwater_taluk(sel_taluk)
     gw_dist = load_groundwater_district(district)
 
+    is_fallback = False
     if gw_df.empty:
-        st.warning("Groundwater monitoring data not available for this taluk. Reverting to regional reference.")
+        gw_df = load_groundwater_taluk("Mandya")
+        gw_dist = load_groundwater_district("Mandya")
+        is_fallback = True
+
+    if is_fallback:
+        st.info(f"💡 Groundwater monitoring data not available for {sel_taluk}. Showing representative reference data from Mandya.")
+
+    if gw_df.empty:
+        st.warning("Groundwater monitoring data not available for this taluk.")
     else:
         # Calculate Risk and Metrics
         latest_year = gw_df['year'].max()
@@ -1509,8 +1531,13 @@ elif page == "📊 Season Analysis":
     st.markdown("---")
 
     wdf = load_weather_taluk(sel_taluk)
+    is_weather_fallback = False
     if wdf.empty:
-        st.warning(f"No historical weather data for {sel_taluk}. Available for Mandya district taluks only."); st.stop()
+        wdf = load_weather_taluk("Mandya")
+        is_weather_fallback = True
+
+    if is_weather_fallback:
+        st.info(f"💡 Historical weather records are currently optimized for Mandya district. Showing regional representative data for {sel_taluk}.")
 
     wdf["year"]  = wdf["date"].dt.year
     wdf["month"] = wdf["date"].dt.month
