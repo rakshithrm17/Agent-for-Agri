@@ -252,6 +252,27 @@ class RawNewsAlert(Base):
     )
 
 
+class RawGroundwaterLevel(Base):
+    """Groundwater depth data (static water level in meters below ground level)
+    for Karnataka taluks. Sourced from Karnataka State Groundwater Department / CGWB.
+    """
+
+    __tablename__ = "raw_groundwater_levels"
+    __table_args__ = (
+        UniqueConstraint("taluk", "district", "year", name="uq_groundwater_taluk_year"),
+        Index("ix_groundwater_district", "district"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    taluk: Mapped[str] = mapped_column(String(128), nullable=False)
+    district: Mapped[str] = mapped_column(String(128), nullable=False)
+    year: Mapped[int] = mapped_column(Integer, nullable=False)
+    depth_m: Mapped[Optional[float]] = mapped_column(Float, nullable=True)  # depth in meters below ground level
+    ingested_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime, nullable=False, server_default=func.now()
+    )
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # LAYER 2 — FEATURE TABLES (Engineering Output)
 # Built from raw tables. These are the direct inputs to the ML models.
