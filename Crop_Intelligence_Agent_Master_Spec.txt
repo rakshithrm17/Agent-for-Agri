@@ -1,0 +1,1252 @@
+CROP INTELLIGENCE AGENT
+Master Engineering & Product Specification
+Data Collection  •  Feature Engineering  •  ML Training  •  Background Agent  •  Dashboard
+Mandya District, Karnataka  |  2020–2026  |  Production + Enterprise Grade
+1. Product Vision — What This Agent Must Deliver
+This is not a simple crop calculator or a chatbot. This is a dedicated, always-running intelligence system that collects real data every night, learns from it, and answers one critical question for the farmer:
+Core Question: If I grow this crop this season in Mandya — will I make profit or loss? What yield will I get? What price will I get when I sell? What is my risk?
+The agent answers this for every crop, every season, with honesty — including high-risk crops like Tomato where prices swing from ₹2/kg to ₹50/kg. It never hallucinates. Every insight is cross-verified against data before it is shown. Every feature is tested for its impact before it is included.
+1.1 The Tomato Problem — Why Risk Scoring is Non-Negotiable
+Tomato is the best example of why a simple average prediction is dangerous. Consider the real pattern:
+Year
+Peak Price
+Crash Price
+Farmer Outcome
+Reason
+2019 Kharif
+₹45/kg
+₹3/kg
+Loss — most farmers
+Oversupply, no cold storage
+2020 Kharif
+₹60/kg
+₹5/kg
+Mixed — early sellers won
+COVID disrupted supply chain
+2021 Rabi
+₹80/kg
+₹2/kg
+Mostly loss
+Bumper crop, no market access
+2022 Summer
+₹120/kg
+₹8/kg
+Profit — rare good year
+Shortage in other states
+2023 Kharif
+₹250/kg
+₹10/kg
+Crore profit for some
+National shortage, export demand
+Agent Rule: For high-volatility crops, the agent must show the probability distribution — not just the average. It must say: In 4 out of 5 seasons, Tomato gave a loss. In 1 out of 5 it gave exceptional profit. Only grow if you have cold storage access or direct buyer contract.
+1.2 Final Dashboard Output — What the Farmer Sees
+For every season, the dashboard shows a ranked crop recommendation table:
+Rank
+Crop
+Predicted Yield
+Predicted Price at Harvest
+Est. Profit/Acre
+Risk Level
+Confidence
+1
+Paddy
+20 qtl/acre
+₹2,200/qtl
+₹28,000
+LOW
+87%
+2
+Ragi
+12 qtl/acre
+₹2,100/qtl
+₹18,500
+LOW
+83%
+3
+Maize
+22 qtl/acre
+₹1,850/qtl
+₹24,000
+MEDIUM
+74%
+4
+Sunflower
+8 qtl/acre
+₹5,800/qtl
+₹22,000
+MEDIUM
+71%
+5
+Tomato
+80 qtl/acre
+₹400/qtl
+₹8,000 avg
+HIGH — Volatile
+38%
+Every number shown on this dashboard must have a verified source, a tested feature, and a validated model behind it. Nothing is assumed. Nothing is guessed. This is the non-negotiable principle of this entire system.
+2. System Architecture — Complete Overview
+The system has five layers. Each layer has a specific responsibility. No layer does the job of another. This separation is what makes the system scalable, testable, and maintainable.
+Layer
+Name
+Responsibility
+Runs When
+Layer 1
+Data Ingestion Agent
+Collect raw data from all sources every night. Store in raw tables. Never modify raw data.
+Daily — 1:00 AM
+Layer 2
+Data Engineering Pipeline
+Clean, validate, transform raw data. Build features. Detect anomalies. Store in feature tables.
+Daily — 2:00 AM
+Layer 3
+ML Training & Evaluation Engine
+Re-train models monthly. Walk-forward validate. Score feature importance. Log all results.
+Monthly — Sunday 3:00 AM
+Layer 4
+Prediction & Insight Engine
+Run predictions for next season using latest model. Cross-verify every insight. Score risk.
+Daily — 4:00 AM
+Layer 5
+Dashboard
+Show farmer: crop ranking, yield forecast, price forecast, risk score, trend charts.
+Always-on — Streamlit
+2.1 Data Flow Diagram (Text Representation)
+Raw Sources  →  Layer 1 Ingestion Agent  →  Raw DB Tables
+Raw DB Tables  →  Layer 2 Engineering Pipeline  →  Feature DB Tables
+Feature DB Tables  →  Layer 3 ML Engine  →  Trained Models + Evaluation Logs
+Trained Models + Feature DB  →  Layer 4 Prediction Engine  →  Prediction DB Tables
+Prediction DB Tables  →  Layer 5 Dashboard  →  Farmer Sees Results
+2.2 Project Folder Structure — Enterprise Grade
+Folder / File
+Purpose
+crop_agent/
+Root project folder
+crop_agent/config/
+All configuration: API keys, DB settings, schedules, thresholds
+crop_agent/config/settings.py
+Central config class — all constants in one place, no hardcoding
+crop_agent/config/logging_config.py
+Structured logging setup — file + console + rotation
+crop_agent/ingestion/
+Layer 1 — all data collection scripts
+crop_agent/ingestion/base_collector.py
+Abstract base class — all collectors inherit from this
+crop_agent/ingestion/mandi_collector.py
+Collect mandi prices from Agmarknet API
+crop_agent/ingestion/weather_collector.py
+Collect weather from Open-Meteo API
+crop_agent/ingestion/satellite_collector.py
+Collect NDVI from Sentinel-2 / GEE
+crop_agent/ingestion/soil_collector.py
+Collect soil data from SoilGrids API
+crop_agent/ingestion/news_collector.py
+Collect crop news/alerts via RSS
+crop_agent/engineering/
+Layer 2 — feature engineering
+crop_agent/engineering/cleaner.py
+Outlier removal, gap filling, unit normalization
+crop_agent/engineering/validator.py
+Data quality checks — every column, every row
+crop_agent/engineering/feature_builder.py
+Build all 46+ features from raw data
+crop_agent/engineering/feature_selector.py
+Test each feature — keep only those that improve model
+crop_agent/ml/
+Layer 3 — ML models
+crop_agent/ml/yield_model.py
+XGBoost yield prediction model
+crop_agent/ml/price_model.py
+Prophet + LSTM price forecasting model
+crop_agent/ml/rank_model.py
+Crop profit ranking classifier
+crop_agent/ml/walk_forward.py
+Walk-forward validation engine
+crop_agent/ml/evaluator.py
+Model evaluation — RMSE, MAPE, feature importance
+crop_agent/ml/anti_hallucination.py
+Cross-verify every prediction — block invalid outputs
+crop_agent/prediction/
+Layer 4 — prediction engine
+crop_agent/prediction/predictor.py
+Run all models, assemble final recommendation
+crop_agent/prediction/risk_scorer.py
+Calculate risk level and confidence score per crop
+crop_agent/prediction/insight_engine.py
+Generate text insights — verified before display
+crop_agent/dashboard/
+Layer 5 — Streamlit dashboard
+crop_agent/dashboard/app.py
+Main Streamlit app entry point
+crop_agent/dashboard/components/
+Reusable dashboard components
+crop_agent/database/
+DB models, migrations, connection management
+crop_agent/database/models.py
+SQLAlchemy ORM models for all tables
+crop_agent/database/migrations/
+Alembic migration scripts
+crop_agent/scheduler/
+APScheduler jobs — orchestrates all nightly tasks
+crop_agent/scheduler/night_agent.py
+Master scheduler — runs all layers in sequence
+crop_agent/tests/
+Unit and integration tests for every module
+crop_agent/logs/
+Rotating log files — one per layer, one master log
+crop_agent/models/
+Saved ML model artifacts (.pkl, .json files)
+requirements.txt
+All Python dependencies with pinned versions
+docker-compose.yml
+Docker setup for local + deployment
+.env
+Environment variables — never committed to Git
+README.md
+Setup and usage instructions
+3. Data Sources — Verified Free & Genuine Sources Only
+Every source below has been selected based on three criteria: (1) It is free and accessible, (2) It is from an official or scientifically validated institution, (3) It provides data relevant to Mandya district, Karnataka. No source is listed without being cross-verified.
+3.1 Mandi & Market Price Data
+Source
+URL / Access
+Data Provided
+Free?
+Update Frequency
+Agmarknet (data.gov.in)
+https://agmarknet.gov.in — API + CSV
+Daily mandi price per crop per market across India
+Yes
+Daily
+eNAM Portal
+https://enam.gov.in/web/dashboard/trade-data
+Online mandi price, arrivals volume, trader data
+Yes
+Daily
+Karnataka APMC Portal
+https://krishimaratavahini.kar.nic.in
+State APMC mandi prices — Mandya, Maddur, Malavalli
+Yes
+Weekly
+Government MSP Notifications
+https://cacp.dacnet.nic.in
+Minimum Support Price per crop per year
+Yes
+Annual
+APEDA
+https://apeda.gov.in/apedawebsite
+Export data — crops exported, volumes, destination
+Yes
+Monthly
+Cross-Verify Rule: Mandi prices from Agmarknet must be cross-checked against Karnataka APMC data weekly. If difference > 15%, flag as anomaly and do not use until resolved. Never use a single source alone for price data.
+3.2 Weather Data
+Source
+URL / Access
+Data Provided
+Free?
+Historical Depth
+Open-Meteo
+https://open-meteo.com/en/docs
+Hourly: temp, rain, humidity, wind, solar radiation. Free REST API.
+Yes
+1940 to present
+IMD (India Met Dept)
+https://mausam.imd.gov.in
+Monthly normals, seasonal forecast, extreme event alerts
+Yes
+1901 to present
+NASA POWER API
+https://power.larc.nasa.gov/api
+Daily climate: solar radiation, temperature, humidity — any lat/lon
+Yes
+1984 to present
+ERA5 Reanalysis (Copernicus)
+https://cds.climate.copernicus.eu
+Hourly historical weather going back to 1940 — very accurate
+Yes (registration)
+1940 to present
+Cross-Verify Rule: Weather data from Open-Meteo must be cross-checked against NASA POWER for the same coordinates monthly. If rainfall differs by more than 20%, use IMD as the tiebreaker. Log all discrepancies.
+3.3 Soil Data
+Source
+URL / Access
+Data Provided
+Free?
+SoilGrids (ISRIC)
+https://rest.soilgrids.org
+pH, organic carbon, clay %, sand %, silt % at 6 depths globally
+Yes
+NBSS&LUP (ICAR)
+https://www.nbsslup.in
+Soil resource maps, soil series data for Karnataka districts
+Yes (download)
+ISRO Bhuvan Portal
+https://bhuvan.nrsc.gov.in
+Soil type GIS layers, land use maps, command area maps
+Yes
+Krishi Vigyan Kendra Mandya
+KVK Mandya — direct contact / portal
+Local soil test reports, variety recommendations for Mandya soils
+Yes (request)
+3.4 Satellite / Remote Sensing Data
+Source
+What We Get
+Resolution
+Free?
+Key Use
+Sentinel-2 (ESA Copernicus)
+NDVI, EVI, land cover classification
+10 meters
+Yes
+Crop health, area estimation
+NASA MODIS (EarthData)
+Vegetation index, land surface temp, evapotranspiration
+500 meters
+Yes
+Drought, water stress
+ISRO Bhuvan FASAL
+Crop area estimation per district from satellite
+District level
+Yes
+Supply forecasting
+Google Earth Engine
+Python API to process all above datasets at scale
+Varies
+Free (research)
+All remote sensing tasks
+3.5 Crop Yield & Production History
+Source
+URL / Access
+Data Provided
+Years Available
+ICRISAT Data Portal (data.gov.in)
+https://data.gov.in — search ICRISAT
+District-level yield per crop per year — all India
+1966 to 2023
+Karnataka Agriculture Dept Statistics
+https://raitamitra.karnataka.gov.in
+Season-wise area, production, productivity by district
+2000 to present
+Directorate of Economics & Statistics
+https://eands.dacnet.nic.in
+National crop statistics, area under irrigation, yield trends
+Multi-year
+ICAR Research Publications
+https://icar.org.in/publications
+Variety-specific yield data, agronomy trial results for Karnataka
+Research papers
+3.6 Supporting Data Sources
+Category
+Source
+What We Get
+Input Costs
+eNAM portal + KVK Mandya
+Seed, fertilizer, pesticide, labor cost per acre per season
+Irrigation
+Karnataka Neeravari Nigama (KNN)
+Canal availability, command area, water release schedule
+Crop Calendar
+ICAR Crop Production Guide Karnataka
+Sowing window, harvest window, duration per variety
+News & Pest Alerts
+Doordarshan Kisan RSS, ICAR alerts, IMD agri-met advisories
+Pest outbreak warnings, disease alerts, weather advisories
+Government Schemes
+pmfby.gov.in, pmkisan.gov.in
+Crop insurance coverage, PM-KISAN eligibility, subsidy data
+Cold Storage
+Karnataka Warehousing Corporation
+Cold storage locations, capacity near Mandya district
+4. Feature Engineering — Every Feature Tested, No Hallucination
+This section defines every feature used in the ML models. Each feature has a purpose. Each feature must be tested for its actual impact on model accuracy before being included. If a feature does not improve the model — it is removed. No feature is added just because it seems logical. It must prove its value in data.
+Anti-Hallucination Rule for Features: Before any feature is included in the final model, it must pass a feature importance test using XGBoost feature_importances_ or SHAP values. Features with importance below threshold are flagged and reviewed. Features that introduce data leakage are permanently banned. Every included feature is documented with its source, calculation method, and measured impact.
+4.1 Location Features
+Feature Name
+Type
+Source
+Why It Matters
+Test Rule
+district
+Categorical
+Manual
+Different districts have different base yields and market access
+Always include — fixed for Phase 1
+taluk
+Categorical
+Manual / GPS
+Soil type, elevation, rainfall vary significantly across Mandya taluks
+Test: does adding taluk reduce RMSE vs district-only?
+latitude
+Float
+GPS
+Microclimate variation — north vs south Mandya gets different rainfall
+Include if SHAP > 0.01
+longitude
+Float
+GPS
+East-west gradient affects monsoon onset timing
+Include if SHAP > 0.01
+elevation_m
+Float
+SRTM DEM
+Higher elevation = cooler temp = affects crop duration and yield
+Required — test impact
+soil_type
+Categorical
+NBSS&LUP
+Mandya has red laterite (ragi, groundnut) and black cotton (sugarcane)
+Always include
+soil_ph
+Float
+SoilGrids
+pH affects nutrient availability — critical for rice and sugarcane
+Include if correlation > 0.15 with yield
+soil_organic_carbon_pct
+Float
+SoilGrids
+Higher organic carbon = better yield potential
+Include if SHAP > 0.01
+clay_percent
+Float
+SoilGrids
+High clay = better water retention = important for dry years
+Test correlation with drought_year yield
+irrigation_type
+Categorical
+KNN / Manual
+Canal-irrigated vs rainfed vs borewell affects yield drastically
+Always include
+distance_to_mandi_km
+Float
+Calculated
+Longer distance = higher transport cost = lower effective price
+Include if correlation with net profit > 0.1
+4.2 Weather Features
+Feature Name
+Type
+Calculation
+Why It Matters
+Test Rule
+rainfall_mm_june
+Float
+Sum of June daily rainfall
+Kharif sowing depends on June onset — critical for germination
+Always include for Kharif crops
+rainfall_mm_seasonal
+Float
+Sum Jun-Nov (Kharif) or Nov-Mar (Rabi)
+Total season water availability
+Always include
+rainfall_deviation_pct
+Float
+(actual - normal) / normal * 100
+How different is this year from average — captures drought/flood
+Include — key stress signal
+temp_max_avg_seasonal
+Float
+Mean of daily max temp over season
+Heat stress reduces grain filling in paddy and maize
+Include if SHAP > 0.01
+temp_min_avg_seasonal
+Float
+Mean of daily min temp over season
+Cold nights affect flowering — ragi, sunflower sensitive
+Include if SHAP > 0.01
+gdd_seasonal
+Float
+Sum of (Tmax+Tmin)/2 - base temp per day
+Growing Degree Days — actual thermal time available for crop growth
+Test against simpler temp features
+humidity_avg_pct
+Float
+Mean daily relative humidity
+High humidity promotes fungal diseases — yield loss signal
+Include if correlation > 0.1 with yield loss
+sunshine_hours_avg
+Float
+Mean daily sunshine hours
+Directly affects photosynthesis and yield
+Include if SHAP > 0.01
+drought_flag
+Binary
+1 if seasonal rainfall < 75% of normal
+Binary shock signal for extreme dry years
+Always include
+flood_flag
+Binary
+1 if seasonal rainfall > 150% of normal
+Binary shock signal for extreme wet years
+Always include
+heat_stress_days
+Integer
+Count of days where Tmax > 35C
+Sustained heat damages flowering and grain filling
+Include if correlation > 0.1
+onset_monsoon_julian
+Integer
+Day of year monsoon arrived
+Late monsoon means late sowing, shorter effective season
+Include — test impact
+dry_spell_max_days
+Integer
+Longest consecutive dry period in season
+Long dry spells after germination kill crops
+Include if SHAP > 0.01
+4.3 Satellite Features
+Feature Name
+Type
+Calculation
+Why It Matters
+Test Rule
+ndvi_at_sowing
+Float
+NDVI value at sowing date ± 5 days
+Captures initial crop establishment quality
+Include if SHAP > 0.01
+ndvi_at_mid_season
+Float
+NDVI value at 50% of crop duration
+Mid-season crop health — best yield predictor from satellite
+Always include — high importance expected
+ndvi_at_pre_harvest
+Float
+NDVI value at 80-85% of crop duration
+Maturity stage health — directly linked to harvest quality
+Always include
+ndvi_max_season
+Float
+Maximum NDVI value in the season
+Peak crop canopy — measure of best growth achieved
+Include if improves RMSE
+ndvi_trend_slope
+Float
+Linear slope of NDVI over season
+Rising trend = healthy growth; falling = stress or disease
+Include if SHAP > 0.01
+evi_mid_season
+Float
+Enhanced Vegetation Index at mid-season
+Better than NDVI in dense canopy crops like sugarcane
+Use for sugarcane, paddy
+lst_avg_seasonal
+Float
+Mean Land Surface Temperature from MODIS
+High LST indicates water stress and heat damage
+Include if correlation > 0.1
+evapotranspiration_mm
+Float
+Total seasonal ET from MODIS MOD16
+Actual water consumed by crop — linked to irrigation need
+Include if SHAP > 0.01
+crop_area_ha_district
+Float
+Total area under this crop in district
+If district-wide area is high, oversupply risk and price crash
+Always include — critical for price model
+4.4 Crop-Specific Features
+Feature Name
+Type
+Source
+Why It Matters
+crop_name
+Categorical
+Manual
+Primary identifier — model is trained per crop or with crop as feature
+crop_season
+Categorical
+ICAR calendar
+Kharif / Rabi / Summer — seasonal patterns differ completely
+crop_duration_days
+Integer
+ICAR crop guide
+Longer duration crops have more weather exposure — higher variance
+variety_type
+Categorical
+Manual / KVK
+HYV varieties yield 30-50% more than traditional — must be captured
+sowing_date_julian
+Integer
+Manual / remote
+Late sowing shortens effective season and reduces yield
+previous_crop_on_land
+Categorical
+Manual
+Legume before paddy improves nitrogen — measurable yield effect
+crop_rotation_flag
+Binary
+Calculated
+1 if proper rotation followed — average 10-15% yield benefit
+is_irrigated
+Binary
+KNN / Manual
+Irrigated vs rainfed — biggest single factor for yield stability
+4.5 Market & Price Features
+Feature Name
+Type
+Source
+Why It Matters
+Leakage Warning
+mandi_price_3m_before_sowing
+Float
+Agmarknet
+Price trend visible at time of decision — farmer sees this before planting
+SAFE — pre-sowing data
+mandi_price_at_harvest
+Float
+Agmarknet
+TARGET VARIABLE for price model — what we predict
+NEVER use as input feature
+mandi_price_last_year_harvest
+Float
+Agmarknet
+Same crop price last year — anchor for this year's expectation
+SAFE — lagged 1 year
+price_volatility_3yr
+Float
+Agmarknet — std dev of last 3 yr prices
+High std dev = high risk crop. Tomato has very high volatility.
+SAFE — historical
+price_seasonality_index
+Float
+Calculated from historical patterns
+Price typically rises in off-season — capture seasonal pattern
+SAFE — historical
+msp_current_year
+Float
+CACP notifications
+Government floor price — reduces downside risk for covered crops
+SAFE
+arrivals_district_last_month
+Float
+Agmarknet
+High arrivals = oversupply = price pressure
+SAFE
+arrivals_yoy_change_pct
+Float
+Calculated from Agmarknet
+Is more or less crop arriving compared to last year?
+SAFE — lagged
+export_demand_flag
+Binary
+APEDA data
+Export demand creates price premium — Tomato 2023 example
+SAFE — lagged
+4.6 Input Cost Features
+Feature Name
+Type
+Source
+Why It Matters
+seed_cost_per_acre
+Float
+eNAM / KVK
+Direct cost — affects profit calculation
+fertilizer_cost_per_acre
+Float
+eNAM / Manual
+Largest input cost for most crops — must be current year price
+pesticide_cost_per_acre
+Float
+eNAM / Manual
+Varies by season — high pest pressure years increase this significantly
+labor_cost_per_acre
+Float
+Market rate / Manual
+Harvest labor costs have risen significantly — must be updated yearly
+irrigation_cost_per_acre
+Float
+KNN / electricity bill
+Power cost for borewell — varies with groundwater depth
+total_input_cost_per_acre
+Float
+Calculated — sum of above
+Key denominator for profit = (yield x price) - total_input_cost
+4.7 Risk & Derived Features
+Feature Name
+Type
+Calculation
+Purpose
+price_risk_score
+Float 0-1
+Coefficient of variation of last 5yr harvest prices
+Higher = more volatile = riskier crop to grow
+yield_risk_score
+Float 0-1
+Coefficient of variation of last 5yr yields
+Higher = more yield uncertainty
+combined_risk_score
+Float 0-1
+Weighted: 0.6 x price_risk + 0.4 x yield_risk
+Overall crop risk — drives Risk Level shown on dashboard
+profit_in_bad_year
+Float
+5th percentile of historical (yield x price - cost)
+Worst case scenario — what farmer earns in a bad year
+profit_in_good_year
+Float
+95th percentile of historical (yield x price - cost)
+Best case scenario — captures Tomato crore moments
+break_even_price
+Float
+total_input_cost / predicted_yield
+Minimum price needed to not lose money — show on dashboard
+years_profitable_of_5
+Integer
+Count of last 5 years where profit > 0
+Simple trust signal — Ragi: 5/5, Tomato: 2/5
+5. Anti-Hallucination System — Every Insight Cross-Verified
+This is the most important engineering principle of this project. The agent must never show a prediction or insight that has not been verified. Hallucination in agriculture advice costs farmers money. The system has multiple layers of checks to prevent this.
+5.1 The Four Verification Rules
+Rule
+Name
+Description
+Enforcement
+Rule 1
+Source Traceability
+Every data point used in a prediction must have a source record in the database. If source is unknown, data is rejected before it enters the feature table.
+validator.py — checks source_id field on every row
+Rule 2
+Feature Impact Proof
+Every feature must demonstrate measurable improvement in model accuracy (RMSE reduction or SHAP value > threshold) before final inclusion. Intuition alone is not enough.
+feature_selector.py — runs permutation importance tests
+Rule 3
+Prediction Range Check
+Model output must fall within historically observed ranges. Paddy yield prediction of 200 qtl/acre is flagged immediately. Price prediction of ₹50,000/qtl for ragi is flagged.
+anti_hallucination.py — crop-specific range validators
+Rule 4
+Cross-Source Consistency
+When multiple data sources cover the same metric, they must agree within tolerance. If Open-Meteo and IMD rainfall differ by > 20% — neither is used until resolved.
+validator.py — cross-source diff checker
+5.2 Prediction Validity Ranges — Per Crop (Mandya District)
+Crop
+Yield Min (qtl/acre)
+Yield Max (qtl/acre)
+Price Min (INR/qtl)
+Price Max (INR/qtl)
+Source for Ranges
+Paddy
+8
+35
+1,400
+3,500
+ICRISAT + Agmarknet 2018-2024
+Sugarcane
+150
+450
+2,800
+4,200
+Karnataka Sugar Authority data
+Ragi
+4
+20
+1,500
+3,500
+Karnataka Agri Dept + Agmarknet
+Maize
+10
+40
+1,200
+2,800
+ICRISAT + Agmarknet
+Sunflower
+3
+14
+4,000
+7,500
+Agmarknet + MSP history
+Groundnut
+5
+18
+4,500
+8,000
+Agmarknet Mandya mandis
+Tomato
+40
+200
+100
+30,000
+Agmarknet — extreme range justified
+Horsegram
+2
+10
+4,000
+9,000
+Karnataka Agri Dept
+Tomato Note: Tomato has an intentionally wide price range (₹100 to ₹30,000/qtl). This is not an error — it reflects real historical data. The model must predict the DISTRIBUTION, not just the average, and show this distribution clearly on the dashboard with the risk warning.
+5.3 Insight Verification Process
+When the insight engine generates a text insight like 'Paddy yields are expected to be above average this Kharif', it must follow these steps before showing it on the dashboard:
+Identify which features drove this insight — which columns had highest SHAP value for this prediction
+Verify each driving feature has a clean data record with a traceable source in the database
+Check if the same insight was generated in previous years and whether it proved correct — track record
+Check if any conflicting data exists — if NDVI says good crop but rainfall was deficient, flag the conflict and show both signals
+Only if all checks pass: display the insight on the dashboard with the supporting data visible
+If any check fails: show 'Insufficient Data' instead of a guess
+6. ML Models — Training, Evaluation & Walk-Forward Validation
+6.1 Model 1 — Yield Prediction Model
+Property
+Specification
+Algorithm
+XGBoost Regressor (primary) with Random Forest as ensemble validator
+Input Features
+All features from Section 4 that pass feature selection — approximately 30-35 after selection
+Target Variable
+yield_per_acre in quintals — regression task
+Hyperparameter Tuning
+Optuna — automated Bayesian optimization. Run on each monthly retrain.
+Training Data
+Walk-forward: only years before prediction year. No future data ever used.
+Evaluation Metric
+RMSE (primary) + MAPE (farmer-understandable). Both reported after each validation.
+Model Storage
+Saved as crop_agent/models/yield_model_YYYYMM.pkl with metadata JSON
+Retraining Trigger
+Monthly scheduled retrain + triggered if MAPE drifts above 15% on live predictions
+6.2 Model 2 — Price Forecasting Model
+Property
+Specification
+Algorithm
+Facebook Prophet for seasonal decomposition + LSTM for residual pattern capture
+Input
+Historical mandi prices (3+ years), arrivals volume, MSP, seasonal flags, export demand
+Target
+Price at harvest month — predict 3-6 months ahead from sowing date
+Key Challenge
+Tomato and other volatile crops have fat-tailed distributions. Use quantile regression for P10, P50, P90 predictions — not just mean.
+Evaluation Metric
+MAPE on held-out year prices. Also evaluate P10/P90 coverage — did the actual price fall within the predicted range?
+Mandatory Output
+Three price scenarios: Pessimistic (P10), Expected (P50), Optimistic (P90)
+Model Storage
+Saved as crop_agent/models/price_model_{crop}_YYYYMM.pkl — separate model per crop
+6.3 Model 3 — Crop Profit Ranking Model
+Property
+Specification
+Algorithm
+LightGBM multi-output regressor — predicts expected profit for each crop simultaneously
+Input
+Season features (weather forecast, soil, irrigation) + output from Model 1 and Model 2 as stacked features
+Output
+Predicted net profit per acre for each crop — ranked from highest to lowest
+Risk Adjustment
+Final ranking adjusted by combined_risk_score — a high-profit but high-risk crop is ranked lower than a moderate-profit low-risk crop unless farmer explicitly wants high-risk options
+Evaluation
+Rank correlation (Spearman) between predicted ranking and actual profit ranking in validation year
+Human Readable Output
+Top 3 recommended crops with: yield, price, profit, risk level, confidence %, years profitable in last 5
+6.4 Walk-Forward Validation — Complete Schedule
+Phase
+Train Years
+Predict Year
+Validate Against
+Pass Condition
+Fail Action
+Phase 1 — Baseline
+2020, 2021, 2022
+Kharif 2023
+2023 actual yield + price
+Yield MAPE < 18%, Price MAPE < 20%
+Feature engineering review — add missing signals
+Phase 1B — Fix & Retry
+2020, 2021, 2022 (fixed features)
+Kharif 2023 again
+2023 actual data
+Must improve over Phase 1 results
+If no improvement: review data quality for 2022
+Phase 2 — Grow
+2020 to 2023
+Kharif 2024
+2024 actual yield + price
+Yield MAPE < 15%, Price MAPE < 17%
+Hyperparameter retune, add satellite features
+Phase 3 — Refine
+2020 to 2024
+Kharif 2025
+2025 actual yield + price
+Yield MAPE < 12%, Price MAPE < 15%
+Ensemble models, add news/alert features
+Phase 4 — Production
+2020 to 2025
+Kharif 2026 (live)
+Validate Dec 2026
+Ongoing monitoring + monthly retrain
+Auto-alert if MAPE drifts above threshold
+Walk-Forward Principle: The model is never allowed to see data from the year it is predicting during training. This is enforced in code in walk_forward.py with an assertion that raises an error if the training end date >= prediction start date. This check is non-removable.
+7. Background Night Agent — Daily Execution Plan
+The night agent is the heart of the system. It runs every night at 1:00 AM while you are sleeping. By morning, the dashboard shows fresh data, fresh predictions, and any new alerts. The agent is fully automated, self-logging, and self-healing where possible.
+7.1 Nightly Execution Schedule
+Time
+Task
+Module
+On Failure
+01:00 AM
+Ingest mandi prices from Agmarknet for all Mandya mandis
+mandi_collector.py
+Retry 3 times, log failure, use yesterday's data
+01:10 AM
+Ingest weather data from Open-Meteo for Mandya lat/lon
+weather_collector.py
+Retry 3 times, fall back to NASA POWER API
+01:20 AM
+Ingest weather from NASA POWER for cross-verification
+weather_collector.py
+Log if unavailable, skip cross-check for today
+01:30 AM
+Check IMD alerts and agri-met advisories via RSS
+news_collector.py
+Log failure, continue pipeline
+01:40 AM
+Cross-verify mandi price data (Agmarknet vs APMC)
+validator.py
+Flag anomalies to anomaly_log table, do not use flagged data
+01:50 AM
+Cross-verify weather data (Open-Meteo vs NASA POWER)
+validator.py
+Flag if > 20% difference, use IMD as tiebreaker
+02:00 AM
+Run data cleaning pipeline — outlier removal, gap filling
+cleaner.py
+Log all imputed values with imputation reason
+02:20 AM
+Rebuild all derived features from cleaned raw data
+feature_builder.py
+If feature build fails, halt pipeline and alert log
+02:40 AM
+Run feature validation — check ranges, nulls, data types
+validator.py
+Block any feature column with > 5% nulls from reaching model
+03:00 AM
+Run prediction engine for current season
+predictor.py
+If model file missing, log error and use last valid prediction
+03:10 AM
+Run anti-hallucination checks on all predictions
+anti_hallucination.py
+Block any prediction outside valid range from reaching dashboard
+03:20 AM
+Generate risk scores for all crops
+risk_scorer.py
+If insufficient data for risk score, show 'N/A' on dashboard
+03:30 AM
+Generate verified text insights
+insight_engine.py
+If insight fails verification, show no insight rather than unverified text
+03:40 AM
+Write final predictions to prediction_output table
+predictor.py
+Timestamp every write — dashboard always reads latest timestamp
+03:45 AM
+Write nightly summary to agent_run_log table
+night_agent.py
+Record: tasks run, tasks failed, data freshness, prediction confidence
+04:00 AM
+Dashboard data refresh complete — morning ready
+Streamlit auto-reload
+Dashboard shows data_freshness timestamp — farmer knows when last update was
+7.2 Monthly Retraining Schedule (First Sunday of Each Month, 3:00 AM)
+Step
+Task
+Expected Duration
+1
+Assemble full training dataset from feature tables (all years)
+5 minutes
+2
+Run walk-forward validation on most recent year as final check
+15 minutes
+3
+Run Optuna hyperparameter tuning for yield model (50 trials)
+30 minutes
+4
+Train final yield model with best hyperparameters on all available data
+10 minutes
+5
+Retrain price forecasting model (Prophet + LSTM) per crop
+20 minutes
+6
+Retrain crop ranking model
+10 minutes
+7
+Run feature importance analysis — update feature weight log
+5 minutes
+8
+Save all new model files with YYYYMM timestamp
+2 minutes
+9
+Write retraining report to model_evaluation_log table
+2 minutes
+10
+Verify new model MAPE is not worse than previous model — if worse, keep old model
+3 minutes
+8. Database Design — Complete Schema
+8.1 Raw Data Tables (Layer 1 — Ingestion Output)
+Table Name
+Key Columns
+Partitioned By
+Retention
+raw_mandi_prices
+id, date, crop, mandi_name, district, price_inr_per_qtl, arrivals_qtl, source_id, ingested_at
+date (monthly)
+5 years
+raw_weather_daily
+id, date, latitude, longitude, source_name, rainfall_mm, temp_max_c, temp_min_c, humidity_pct, wind_kmh, solar_wm2, ingested_at
+date (monthly)
+5 years
+raw_ndvi_sentinel
+id, sensing_date, block_id, district, ndvi, evi, cloud_cover_pct, satellite_pass, ingested_at
+sensing_date (quarterly)
+5 years
+raw_soil_properties
+id, taluk, district, soil_type, ph, organic_carbon_pct, clay_pct, sand_pct, silt_pct, source_id, collected_date
+Static — no partition
+Permanent
+raw_crop_yield_history
+id, year, season, district, taluk, crop, area_ha, production_tonnes, yield_qtl_per_ha, source_id
+year
+Permanent
+raw_input_costs
+id, year, season, crop, district, seed_inr_per_acre, fertilizer_inr_per_acre, pesticide_inr_per_acre, labor_inr_per_acre, source_id
+year
+5 years
+raw_news_alerts
+id, published_at, source, headline, alert_type, crop_mentioned, district_mentioned, severity, ingested_at
+published_at (monthly)
+2 years
+8.2 Feature Tables (Layer 2 — Engineering Output)
+Table Name
+Description
+Key Columns
+features_weather_seasonal
+One row per district per season per year — all weather features aggregated
+year, season, district, rainfall_mm_seasonal, temp_max_avg, gdd, drought_flag, flood_flag, heat_stress_days, all derived weather features
+features_satellite_seasonal
+One row per district per crop per season — NDVI and satellite features
+year, season, district, crop, ndvi_sowing, ndvi_mid, ndvi_pre_harvest, ndvi_trend_slope, lst_avg, et_mm
+features_market_seasonal
+One row per crop per mandi per season — price and market features
+year, season, crop, mandi_name, price_3m_before_sowing, price_last_year, price_volatility_3yr, arrivals_change_pct, msp, export_flag
+features_master
+Final joined feature table — one row per crop per taluk per season
+ALL features from above tables joined — this is direct input to ML models
+feature_importance_log
+Feature importance scores from each training run
+model_version, feature_name, importance_score, shap_value, included_in_model, run_date
+8.3 Model & Prediction Tables (Layers 3 & 4)
+Table Name
+Description
+Key Columns
+model_evaluation_log
+Results of every walk-forward validation and monthly retrain
+model_type, train_end_year, predict_year, yield_rmse, yield_mape, price_mape, rank_accuracy, model_version, run_date, passed_threshold
+predictions_current
+Latest predictions for current/upcoming season
+crop, district, taluk, season, year, pred_yield_qtl, pred_price_p50, pred_price_p10, pred_price_p90, pred_profit, risk_score, confidence_pct, rank, generated_at
+predictions_history
+Archive of all past predictions for accuracy tracking
+Same as predictions_current + actual_yield, actual_price, actual_profit (filled after harvest)
+anomaly_log
+All data quality issues flagged by validator
+table_name, column_name, row_id, issue_type, issue_detail, source_a_value, source_b_value, flagged_at, resolved
+agent_run_log
+Summary of every nightly agent run
+run_date, tasks_total, tasks_success, tasks_failed, data_freshness_hrs, predictions_generated, anomalies_flagged, run_duration_sec
+9. Dashboard Design — What the Farmer Sees
+The dashboard is built in Streamlit (Phase 1 — local). It is designed to be simple, honest, and actionable. Every number shown traces back to verified data. The dashboard never shows a prediction without also showing the data freshness timestamp and confidence score.
+9.1 Dashboard Pages
+Page
+Purpose
+Key Components
+Page 1 — Season Recommendation
+Main page — crop ranking for current season
+Ranked crop table with profit/yield/price/risk. Top recommendation card. Break-even price. Years profitable of last 5.
+Page 2 — Price Forecast
+Mandi price forecast for next 6 months per crop
+Line chart with P10/P50/P90 bands. Historical prices overlay. Volatility warning for high-risk crops.
+Page 3 — Yield Forecast
+Expected yield per crop for this season
+Bar chart with confidence intervals. Compare to district average. Key yield drivers (top 3 features).
+Page 4 — Weather & Season Status
+Current season weather vs normal
+Rainfall deviation chart. Temperature trend. Drought/flood flag. Upcoming weather forecast.
+Page 5 — Crop Detail
+Deep-dive for any selected crop
+Full profit calculator: enter your land size → see full income estimate. Pessimistic / Expected / Optimistic scenarios.
+Page 6 — Agent Health
+Show farmer the system is working
+Last run timestamp. Data freshness per source. Anomalies detected. Model version and last validation accuracy.
+9.2 Non-Negotiable Dashboard Rules
+Every prediction must show the data freshness timestamp — farmer must know if data is from today or 3 days ago
+Every prediction must show the confidence percentage — farmer must know how certain the model is
+High-risk crops (Tomato, Onion) must always show the worst-case profit alongside expected profit
+The break-even price must always be shown — so farmer knows at what market price they will not lose money
+If any data source failed in last 24 hours, show a visible warning on the dashboard — no silent failures
+Dashboard must load in under 3 seconds — no heavy queries at page load, all data pre-computed by the agent
+10. Code Quality Standards — Production + Enterprise Grade
+10.1 Every Line of Code Must Follow These Rules
+Rule
+Standard
+Enforcement Tool
+Typing
+All functions must have type hints on every parameter and return value. No untyped functions.
+mypy — fails CI if type errors found
+Docstrings
+Every class and every public method must have a Google-style docstring explaining what it does, what it takes, what it returns.
+pydocstyle — checked in CI
+No Magic Numbers
+No raw numbers in code. All constants go in config/settings.py with descriptive names. Example: DROUGHT_THRESHOLD_PCT = 75, not just 75.
+Code review — flagged in PR
+Error Handling
+Every external API call, file read, and database write must be wrapped in try-except. Specific exception types only — no bare except.
+pylint — bare except rule
+Logging
+Every significant action logs: what happened, what data was involved, what the result was. Use structlog for structured JSON logs.
+structlog — mandatory import in base classes
+No Hardcoded Paths
+All file paths and URLs go in settings.py or .env file. No hardcoded strings in logic code.
+grep CI check — fails if path string in logic file
+No Silent Failures
+If a step fails and the pipeline continues, it must write to the anomaly_log. No step can fail silently.
+Code review rule — every except block must log
+Unit Tests
+Every function that transforms data or makes a calculation must have a unit test. Minimum 80% code coverage.
+pytest + coverage — fails CI if < 80%
+No Data Leakage
+Date filters in ML preparation code must be reviewed in every PR. Walk-forward assertions are non-removable.
+walk_forward.py — assertion that raises RuntimeError if violated
+Reproducibility
+All ML training runs must log: random seed, package versions, feature list, training date range, evaluation metrics.
+mlflow or custom experiment_log table
+10.2 Dependencies — Pinned Versions (requirements.txt)
+Package
+Version
+Purpose
+pandas
+2.2.x
+Data manipulation, feature engineering
+numpy
+1.26.x
+Numerical operations
+xgboost
+2.0.x
+Yield prediction model
+lightgbm
+4.3.x
+Crop ranking model
+prophet
+1.1.x
+Price time series forecasting
+scikit-learn
+1.4.x
+Preprocessing, evaluation metrics, Random Forest
+optuna
+3.5.x
+Hyperparameter optimization
+sqlalchemy
+2.0.x
+ORM for PostgreSQL
+alembic
+1.13.x
+Database migrations
+apscheduler
+3.10.x
+Background job scheduling
+structlog
+24.x
+Structured logging
+streamlit
+1.32.x
+Dashboard UI
+plotly
+5.20.x
+Interactive charts in dashboard
+folium
+0.16.x
+Map visualization
+requests
+2.31.x
+API calls for data ingestion
+python-dotenv
+1.0.x
+Environment variable management
+pytest
+8.x
+Unit and integration testing
+mypy
+1.9.x
+Static type checking
+shap
+0.45.x
+Feature importance explanation
+10.3 Docker Setup for Reproducibility
+docker-compose.yml runs three containers: (1) PostgreSQL database, (2) Python agent scheduler, (3) Streamlit dashboard
+All three start with one command: docker-compose up
+Database volume is mounted to local disk — data persists across restarts
+Environment variables from .env file are injected — no secrets in code
+Dockerfile uses pinned base image (python:3.11-slim) — same environment every time
+11. Scalability Plan — Local Today, National Tomorrow
+Phase
+Scale
+Infrastructure Change
+Timeline
+Phase 1 — Local
+Single user, Mandya district only
+Your PC + PostgreSQL + Streamlit local. No internet hosting needed.
+Now — immediate
+Phase 2 — District+
+Small group, all Mandya taluks
+Move to Railway.app or Render.com free tier. Streamlit Cloud for dashboard. Still single DB.
+After Walk-Forward validates
+Phase 3 — Karnataka
+100s of users, all districts
+PostgreSQL on managed cloud (Supabase free tier). Streamlit hosted. Add district column to all tables.
+After Phase 2 validates
+Phase 4 — Multi-State
+1000+ users, multiple states
+Horizontal scaling: separate DB per state, load-balanced API layer, mobile-friendly UI
+Future — after community adoption
+Phase 5 — National
+Nationwide deployment
+Full cloud infrastructure, multi-language support (Kannada, Hindi, Telugu), voice interface
+Long-term vision
+The key design decisions that make scaling possible from day one:
+All tables have a district column — never hardcoded to Mandya
+All config is in settings.py — adding a new district requires only config change, not code change
+Modular folder structure — adding a new data source means adding one new collector.py file, nothing else changes
+Database schema uses Alembic migrations — adding new columns as we scale is safe and trackable
+12. Master Summary — Everything in One Place
+Dimension
+Decision
+Reason
+End Product
+Dashboard showing crop profit ranking per season with risk score and confidence
+Farmer needs actionable yes/no with full picture, not raw data
+Core Algorithm
+Walk-Forward Validation — train past, predict next year, measure, fix, move forward
+Most honest test of a forecasting model — mirrors real usage
+Anti-Hallucination
+Four verification rules — every insight must pass source check, range check, cross-source check, feature proof
+Agriculture advice costs money if wrong — zero tolerance for guesses
+Data Sources
+16 free official sources — Agmarknet, IMD, Open-Meteo, Sentinel-2, ICRISAT, SoilGrids, NBSS&LUP and more
+Only genuine data — no paid APIs, no scraped unreliable sources
+Features
+46 engineered features across 7 categories — each must prove its value before inclusion
+Every small feature can make a big difference — but only if it is real signal, not noise
+Risk Scoring
+Separate price risk and yield risk — Tomato shows distribution, not just average
+Tomato gave crores in 2023 but loss in 4 of 5 years — farmer must see full truth
+Night Agent
+Runs daily at 1 AM — 16 tasks in sequence — self-logging — anomaly detection built in
+Fresh data every morning without manual effort — system works while farmer sleeps
+Code Quality
+Production + Enterprise — type hints, docstrings, unit tests (80% coverage), structured logging, Docker
+Code that works today and is maintainable for 5 years — no shortcuts
+Technology Stack
+Python, PostgreSQL, XGBoost, Prophet, Streamlit — all free and open source
+Zero ongoing cost — fully own the system
+Scalability
+Built for Mandya, architected for Karnataka and beyond from day one
+No rewrites needed when expanding — just add district to config
+Total Features Defined: 46 features across 7 categories — each with source, calculation, and test rule
+Data Sources: 16 verified free sources — all official government or scientific institutions
+Crops in Scope: 8 major crops of Mandya district — expandable to all Karnataka crops
+Validation Method: Walk-Forward Year-by-Year — most honest forecasting validation approach
+Anti-Hallucination: 4 mandatory verification rules — every insight cross-checked before display
+Night Agent Tasks: 16 automated nightly tasks with self-healing and anomaly logging
+Code Standard: Production + Enterprise — typed, tested, logged, Dockerized, and scalable
+Starting Point: Mandya District, Karnataka — built to scale to full Karnataka and beyond
+Final Principle: This system earns trust by being honest. It shows confidence scores. It shows risk. It shows worst-case scenarios. It never guesses. When data is missing, it says so. When a prediction is uncertain, it says so. This honesty is what makes it a tool a farmer can actually trust with their livelihood.

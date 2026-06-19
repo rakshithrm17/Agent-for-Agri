@@ -38,6 +38,8 @@ build/
 *.db
 *.sqlite
 *.sqlite3
+*.db-shm
+*.db-wal
 
 # ML model artifacts — large binary files
 crop_agent/models/
@@ -56,6 +58,7 @@ logs/
 .env
 .env.local
 .env.*.local
+.streamlit/secrets.toml
 
 # macOS
 .DS_Store

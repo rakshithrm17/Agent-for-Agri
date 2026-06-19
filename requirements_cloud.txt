@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────────────────
+# Streamlit Cloud Requirements
+# Stripped of heavy ML libs for faster cloud deployment
+# (ML training runs locally, dashboard just reads results)
+# ─────────────────────────────────────────────────────────
+
+# Core data
+pandas==2.2.3
+numpy==1.26.4
+
+# Database
+sqlalchemy==2.0.30
+
+# Dashboard & charts
+streamlit==1.32.2
+plotly==5.20.0
+
+# HTTP
+requests==2.31.0
+
+# Environment
+python-dotenv==1.0.1
+
+# Logging
+structlog==24.1.0
+
+# Google Earth Engine (satellite NDVI)
+earthengine-api==0.1.410

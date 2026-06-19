@@ -44,22 +44,105 @@ LOG_DIR: Final[Path] = Path(_require_env("LOG_DIR", "crop_agent/logs"))
 # Phase 2: PostgreSQL (postgresql+psycopg2://user:pass@host:5432/db)
 DATABASE_URL: Final[str] = _require_env("DATABASE_URL", "sqlite:///./crop_agent.db")
 
-# ─── Geography — Mandya District, Karnataka ──────────────────────────────────────
+# ─── Geography — South Karnataka Dry Zone ────────────────────────────────────────
+#
+# Agro-Climatic Zoning (UAS Bangalore / ICAR):
+#   Zone 5 — Southern Dry Zone  : Mandya, Mysuru, Chamarajanagar
+#   Zone 6 — Eastern Dry Zone   : Kolar, Chikkaballapura, Bangalore Rural, Ramanagara
+#   Zone 7 — Northern Dry Zone  : Tumkuru, Chitradurga (southern belt)
+#   Zone 3 — Southern Transition: Hassan (dry taluks only)
+#
+# EXCLUDED (different agro-climatic conditions — never compare with above):
+#   Coastal Zone  : Dakshina Kannada, Udupi, Uttara Kannada coast
+#   Malnad Zone   : Kodagu, Chikkamagaluru, Shivamogga hills, Hassan hills
+#
+# These taluks share: semi-arid climate, red/black soils, 600-900mm rainfall,
+# similar crops (paddy, ragi, sugarcane, tomato, groundnut, onion), and
+# similar mandi price dynamics. Comparing across these is valid and useful.
+
 MANDYA_LATITUDE: Final[float] = float(_require_env("MANDYA_LATITUDE", "12.5234"))
 MANDYA_LONGITUDE: Final[float] = float(_require_env("MANDYA_LONGITUDE", "76.8961"))
 DEFAULT_DISTRICT: Final[str] = _require_env("DEFAULT_DISTRICT", "Mandya")
 DEFAULT_STATE: Final[str] = _require_env("DEFAULT_STATE", "Karnataka")
 
-# All Mandya taluks — used for location features
+# ── Zone 5: Southern Dry Zone ─────────────────────────────────────────────────────
 MANDYA_TALUKS: Final[list[str]] = [
-    "Mandya",
-    "Maddur",
-    "Malavalli",
-    "Nagamangala",
-    "Pandavapura",
-    "Shrirangapattana",
-    "Krishnarajapete",
+    "Mandya", "Maddur", "Malavalli", "Nagamangala",
+    "Pandavapura", "Shrirangapattana", "Krishnarajapete",
 ]
+
+MYSURU_TALUKS: Final[list[str]] = [
+    "Mysuru", "Hunsur", "Nanjangud", "T. Narasipura",
+    "Periyapatna", "H.D. Kote", "Tirumakudalu Narasipura",
+]
+
+CHAMARAJANAGAR_TALUKS: Final[list[str]] = [
+    "Chamarajanagar", "Gundlupet", "Kollegal", "Yelandur",
+]
+
+# ── Zone 6: Eastern Dry Zone ──────────────────────────────────────────────────────
+RAMANAGARA_TALUKS: Final[list[str]] = [
+    "Ramanagara", "Channapatna", "Kanakapura", "Magadi",
+]
+
+BANGALORE_RURAL_TALUKS: Final[list[str]] = [
+    "Devanahalli", "Doddaballapura", "Hosakote", "Nelamangala",
+]
+
+KOLAR_TALUKS: Final[list[str]] = [
+    "Kolar", "Malur", "Mulbagal", "Srinivaspur", "Bangarpet",
+]
+
+CHIKKABALLAPURA_TALUKS: Final[list[str]] = [
+    "Chikkaballapura", "Bagepalli", "Chintamani",
+    "Gouribidanur", "Gudibanda", "Sidlaghatta",
+]
+
+# ── Zone 7 / Transition: Northern & Southern Transition ──────────────────────────
+TUMKURU_TALUKS: Final[list[str]] = [
+    "Tumkuru", "Tiptur", "Turuvekere", "Madhugiri",
+    "Gubbi", "Sira", "Pavagada", "Kunigal",
+]
+
+HASSAN_DRY_TALUKS: Final[list[str]] = [
+    # Dry/transition taluks only — Sakleshpur (Malnad) excluded
+    "Hassan", "Arsikere", "Channarayapatna", "Holenarasipur", "Belur",
+]
+
+# ── Combined: All South Karnataka Dry Zone Taluks ────────────────────────────────
+# Use this for cross-taluk supply/demand analysis and price comparison
+SOUTH_KARNATAKA_DRY_ZONE_TALUKS: Final[list[str]] = (
+    MANDYA_TALUKS
+    + MYSURU_TALUKS
+    + CHAMARAJANAGAR_TALUKS
+    + RAMANAGARA_TALUKS
+    + BANGALORE_RURAL_TALUKS
+    + KOLAR_TALUKS
+    + CHIKKABALLAPURA_TALUKS
+    + TUMKURU_TALUKS
+    + HASSAN_DRY_TALUKS
+)
+
+# District → taluk mapping (for grouping and display)
+DISTRICT_TALUKS_MAP: Final[dict[str, list[str]]] = {
+    "Mandya":         MANDYA_TALUKS,
+    "Mysuru":         MYSURU_TALUKS,
+    "Chamarajanagar": CHAMARAJANAGAR_TALUKS,
+    "Ramanagara":     RAMANAGARA_TALUKS,
+    "Bangalore Rural": BANGALORE_RURAL_TALUKS,
+    "Kolar":          KOLAR_TALUKS,
+    "Chikkaballapura": CHIKKABALLAPURA_TALUKS,
+    "Tumkuru":        TUMKURU_TALUKS,
+    "Hassan":         HASSAN_DRY_TALUKS,
+}
+
+# Taluk → district reverse lookup
+TALUK_TO_DISTRICT: Final[dict[str, str]] = {
+    taluk: district
+    for district, taluks in DISTRICT_TALUKS_MAP.items()
+    for taluk in taluks
+}
+
 
 # ─── Crops ────────────────────────────────────────────────────────────────────────
 # NOTE: The full all-India crop catalog (100+ crops) lives in:
