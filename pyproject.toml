@@ -1,5 +1,3 @@
-.python-version-file = true
-
 [tool.ruff]
 line-length = 100
 target-version = "py311"
