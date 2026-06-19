@@ -28,6 +28,7 @@ build/
 *.xls
 *.pdf
 *.json.gz
+data/raw_downloads/
 
 # Exception: seed/reference data IS committed (it is code, not collected data)
 # This includes the crop catalog, district lists, and crop calendars

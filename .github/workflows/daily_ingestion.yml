@@ -1,0 +1,40 @@
+name: Daily Data Ingestion
+
+on:
+  schedule:
+    # Run daily at 00:00 UTC (5:30 AM IST)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allow manual run from the GitHub Actions tab
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run daily update script
+        env:
+          AGMARKNET_API_KEY: ${{ secrets.AGMARKNET_API_KEY }}
+        run: |
+          PYTHONPATH=. python scripts/daily_update.py
+
+      - name: Commit and push updated database
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add crop_agent.db
+          # Commit and push only if there are changes to the database
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: daily database auto-update [skip ci]" && git push)
