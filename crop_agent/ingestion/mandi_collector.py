@@ -19,6 +19,7 @@ the collector will log a clear warning and skip — no silent failure.
 
 import datetime
 from datetime import date
+from typing import Any
 
 from crop_agent.config.logging_config import get_logger
 from crop_agent.config.settings import (
@@ -55,10 +56,12 @@ class MandiCollector(BaseCollector):
     If the API key is not set, the collector logs a clear warning and returns 0
     without crashing — the night agent continues with other tasks.
 
-    Attributes:
+    Attributes
+    ----------
         district: District to collect prices for.
         state: State name for API filtering.
         mandis: List of mandi names to collect from.
+
     """
 
     def __init__(
@@ -70,9 +73,11 @@ class MandiCollector(BaseCollector):
         """Initialize the mandi price collector.
 
         Args:
+        ----
             district: District name for DB tagging and API filtering.
             state: State name for API filtering.
             mandis: List of mandi names to collect. Defaults to Mandya mandis.
+
         """
         super().__init__(source_name="agmarknet")
         self.district = district
@@ -83,10 +88,13 @@ class MandiCollector(BaseCollector):
         """Collect mandi prices for all configured mandis for the given date.
 
         Args:
+        ----
             target_date: Date to collect prices for.
 
         Returns:
+        -------
             Number of price rows written to the database.
+
         """
         if not AGMARKNET_API_KEY:
             logger.warning(
@@ -146,15 +154,18 @@ class MandiCollector(BaseCollector):
 
         return rows_written
 
-    def _save_price_row(self, record: dict, target_date: date) -> int:
+    def _save_price_row(self, record: dict[str, Any], target_date: date) -> int:
         """Parse a single Agmarknet API record and save to database.
 
         Args:
+        ----
             record: Raw API record dict from Agmarknet response.
             target_date: The date this record belongs to.
 
         Returns:
+        -------
             1 if saved, 0 if duplicate or failed.
+
         """
         try:
             crop = record.get("Commodity", "").strip()
@@ -227,6 +238,7 @@ class MandiCollector(BaseCollector):
         and return False — the price is not used in feature engineering.
 
         Args:
+        ----
             crop: Crop name.
             mandi: Mandi name.
             agmarknet_price: Price from Agmarknet in INR/qtl.
@@ -234,7 +246,9 @@ class MandiCollector(BaseCollector):
             target_date: Date of the price data.
 
         Returns:
+        -------
             True if prices agree within tolerance, False if flagged.
+
         """
         if agmarknet_price <= 0 or apmc_price <= 0:
             return True  # Skip check if either price is zero/invalid

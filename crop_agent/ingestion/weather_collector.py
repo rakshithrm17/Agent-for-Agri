@@ -41,10 +41,12 @@ class WeatherCollector(BaseCollector):
     can detect discrepancies. Results for both sources are stored in
     raw_weather_daily with different source_name values.
 
-    Attributes:
+    Attributes
+    ----------
         latitude: Location latitude in decimal degrees.
         longitude: Location longitude in decimal degrees.
         district: District name for DB tagging.
+
     """
 
     def __init__(
@@ -56,9 +58,11 @@ class WeatherCollector(BaseCollector):
         """Initialize the weather collector for a specific location.
 
         Args:
+        ----
             latitude: Latitude in decimal degrees.
             longitude: Longitude in decimal degrees.
             district: Name of the district (used for DB tagging).
+
         """
         super().__init__(source_name="weather")
         self.latitude = latitude
@@ -69,10 +73,13 @@ class WeatherCollector(BaseCollector):
         """Collect weather data for target_date from both sources.
 
         Args:
+        ----
             target_date: The date to collect weather data for.
 
         Returns:
+        -------
             Total number of rows written (up to 2 — one per source).
+
         """
         rows_written = 0
 
@@ -98,10 +105,13 @@ class WeatherCollector(BaseCollector):
         """Fetch daily weather from Open-Meteo archive API.
 
         Args:
+        ----
             target_date: Date to fetch data for.
 
         Returns:
+        -------
             Dictionary of weather values, or None if fetch failed.
+
         """
         date_str = target_date.strftime("%Y-%m-%d")
         params = {
@@ -147,10 +157,13 @@ class WeatherCollector(BaseCollector):
         """Fetch daily weather from NASA POWER API.
 
         Args:
+        ----
             target_date: Date to fetch data for.
 
         Returns:
+        -------
             Dictionary of weather values, or None if fetch failed.
+
         """
         date_str = target_date.strftime("%Y%m%d")
         params = {
@@ -204,11 +217,14 @@ class WeatherCollector(BaseCollector):
         """Persist a weather data row to the database.
 
         Args:
+        ----
             data: Dictionary of weather values.
             source_name: The source identifier string.
 
         Returns:
+        -------
             1 if row was written, 0 if skipped (duplicate) or failed.
+
         """
         try:
             with get_session() as session:
@@ -261,9 +277,11 @@ class WeatherCollector(BaseCollector):
         by more than CROSS_SOURCE_WEATHER_TOLERANCE_PCT (20%), log to anomaly_log.
 
         Args:
+        ----
             open_meteo: Weather data dict from Open-Meteo.
             nasa: Weather data dict from NASA POWER.
             target_date: The date being verified.
+
         """
         om_rain = open_meteo.get("rainfall_mm")
         nasa_rain = nasa.get("rainfall_mm")
@@ -314,12 +332,15 @@ class WeatherCollector(BaseCollector):
         """Safely extract a float value from an API response list.
 
         Args:
+        ----
             daily: The 'daily' response dict from Open-Meteo.
             key: The variable name to extract.
             index: The index position in the list.
 
         Returns:
+        -------
             Float value or None if missing/null.
+
         """
         values = daily.get(key, [])
         if not values or index >= len(values):
@@ -333,11 +354,14 @@ class WeatherCollector(BaseCollector):
         """Collect weather data for a date range (used for initial data seeding).
 
         Args:
+        ----
             start_date: First date to collect (inclusive).
             end_date: Last date to collect (inclusive).
 
         Returns:
+        -------
             Total rows written across all dates.
+
         """
         total_rows = 0
         current = start_date

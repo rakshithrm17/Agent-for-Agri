@@ -15,6 +15,7 @@ Usage:
 
 from collections.abc import Generator
 from contextlib import contextmanager
+from typing import Any
 
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.engine import Engine
@@ -41,14 +42,16 @@ engine: Engine = create_engine(
 # Enable WAL mode for SQLite — allows concurrent reads during writes
 if DATABASE_URL.startswith("sqlite"):
     @event.listens_for(engine, "connect")
-    def set_sqlite_pragma(dbapi_connection: object, connection_record: object) -> None:
+    def set_sqlite_pragma(dbapi_connection: Any, connection_record: object) -> None:
         """Enable WAL mode and foreign keys for SQLite connections.
 
         Args:
+        ----
             dbapi_connection: The raw DBAPI connection object.
             connection_record: The connection pool record.
+
         """
-        cursor = dbapi_connection.cursor()  # type: ignore[union-attr]
+        cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()
@@ -70,15 +73,19 @@ def get_session() -> Generator[Session, None, None]:
     Always closes the session when done.
 
     Yields:
+    ------
         A SQLAlchemy Session object.
 
     Raises:
+    ------
         Exception: Re-raises any exception after rolling back the transaction.
 
     Example:
+    -------
         with get_session() as session:
             price = RawMandiPrice(crop="Paddy", price_inr_per_qtl=2200.0)
             session.add(price)
+
     """
     session = SessionLocal()
     try:
@@ -100,8 +107,10 @@ def get_session() -> Generator[Session, None, None]:
 def verify_connection() -> bool:
     """Verify the database connection is working.
 
-    Returns:
+    Returns
+    -------
         True if connection is healthy, False otherwise.
+
     """
     try:
         with engine.connect() as conn:

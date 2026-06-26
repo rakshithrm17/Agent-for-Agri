@@ -9,7 +9,7 @@ needs to change — no hunting through code files.
 """
 
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
@@ -25,11 +25,14 @@ def _require_env(key: str, default: str = "") -> str:
     """Get an environment variable, returning default if not set.
 
     Args:
+    ----
         key: The environment variable name.
         default: Default value if variable is not set.
 
     Returns:
+    -------
         The value of the environment variable, or default.
+
     """
     return os.environ.get(key, default)
 
@@ -355,13 +358,15 @@ PRICE_QUANTILE_HIGH: Final[float] = 0.90  # P90 — optimistic scenario
 class CropCalendar:
     """ICAR crop calendar entry for a single crop-season combination.
 
-    Attributes:
+    Attributes
+    ----------
         crop: The crop name.
         season: The growing season (Kharif/Rabi/Summer/Annual).
         sowing_start_month: Month when sowing typically begins (1-12).
         sowing_end_month: Month when sowing window closes (1-12).
         harvest_month: Typical harvest month (1-12).
         duration_days: Typical crop duration from sowing to harvest in days.
+
     """
 
     crop: str

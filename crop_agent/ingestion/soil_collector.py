@@ -57,9 +57,11 @@ class SoilCollector(BaseCollector):
     Data is collected once per taluk and treated as permanent reference.
     If a taluk already has soil data in the database, it is skipped.
 
-    Attributes:
+    Attributes
+    ----------
         district: District name for DB tagging.
         taluks: List of taluks to collect soil data for.
+
     """
 
     def __init__(
@@ -70,8 +72,10 @@ class SoilCollector(BaseCollector):
         """Initialize the soil collector.
 
         Args:
+        ----
             district: District name (used for DB tagging).
             taluks: List of taluks to collect. Defaults to all Mandya taluks.
+
         """
         super().__init__(source_name="soilgrids")
         self.district = district
@@ -84,10 +88,13 @@ class SoilCollector(BaseCollector):
         but soil data is not date-specific — it is collected once per taluk.
 
         Args:
+        ----
             target_date: Date of collection (stored as collected_date).
 
         Returns:
+        -------
             Number of new taluk records written.
+
         """
         rows_written = 0
 
@@ -113,10 +120,13 @@ class SoilCollector(BaseCollector):
         """Check if soil data for this taluk already exists in the database.
 
         Args:
+        ----
             taluk: Taluk name to check.
 
         Returns:
+        -------
             True if data exists, False if we need to collect.
+
         """
         try:
             with get_session() as session:
@@ -140,12 +150,15 @@ class SoilCollector(BaseCollector):
         down to 30cm depth as the secondary value for deeper-rooted crops.
 
         Args:
+        ----
             lat: Latitude in decimal degrees.
             lon: Longitude in decimal degrees.
             taluk: Taluk name (for logging only).
 
         Returns:
+        -------
             Dict of soil property values, or None if fetch failed.
+
         """
         params = {
             "lon": lon,
@@ -226,12 +239,15 @@ class SoilCollector(BaseCollector):
         """Persist a soil property row to the database.
 
         Args:
+        ----
             taluk: Taluk name.
             soil_data: Dict of soil property values from SoilGrids.
             collected_date: Date when data was collected.
 
         Returns:
+        -------
             1 if written successfully, 0 if failed.
+
         """
         try:
             with get_session() as session:
@@ -273,10 +289,13 @@ class SoilCollector(BaseCollector):
         Safe to call multiple times — skips already-collected taluks.
 
         Args:
+        ----
             target_date: Collection date. Defaults to today.
 
         Returns:
+        -------
             Total rows written.
+
         """
         from datetime import date as date_type
         run_date = target_date or date_type.today()

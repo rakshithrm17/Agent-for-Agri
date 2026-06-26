@@ -15,10 +15,9 @@ Seed file locations:
 from __future__ import annotations
 
 import csv
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Optional
 
 from crop_agent.config.logging_config import get_logger
 
@@ -35,7 +34,8 @@ DISTRICTS_CATALOG_PATH: Path = SEEDS_DIR / "districts_karnataka.csv"
 class CropInfo:
     """Complete metadata for a single crop from the all-India catalog.
 
-    Attributes:
+    Attributes
+    ----------
         crop_name: Official crop name (e.g. "Paddy (Rice)").
         crop_category: Top-level category (Cereal, Pulse, Vegetable, Fruit, etc.).
         crop_sub_category: Sub-category within the group.
@@ -52,6 +52,7 @@ class CropInfo:
         yield_max_per_acre: Maximum observed yield per acre.
         price_min_inr_per_unit: Minimum observed price in INR per unit.
         price_max_inr_per_unit: Maximum observed price in INR per unit.
+
     """
 
     crop_name: str
@@ -76,7 +77,8 @@ class CropInfo:
 class DistrictInfo:
     """Reference data for a district/taluk location.
 
-    Attributes:
+    Attributes
+    ----------
         district_name: District name.
         taluk: Taluk name within the district.
         state: State name.
@@ -86,6 +88,7 @@ class DistrictInfo:
         soil_type_primary: Primary soil classification.
         major_crops: List of major crops grown in this area.
         agro_climatic_zone: Agro-climatic zone classification.
+
     """
 
     district_name: str
@@ -105,12 +108,15 @@ def load_crops_catalog() -> dict[str, CropInfo]:
 
     Results are cached after the first call — O(1) for all subsequent accesses.
 
-    Returns:
+    Returns
+    -------
         Dictionary mapping crop_name → CropInfo for all 100+ crops.
 
-    Raises:
+    Raises
+    ------
         FileNotFoundError: If the crop catalog CSV is missing.
         ValueError: If the CSV has malformed rows.
+
     """
     if not CROPS_CATALOG_PATH.exists():
         raise FileNotFoundError(
@@ -159,11 +165,14 @@ def load_crops_catalog() -> dict[str, CropInfo]:
 def load_districts_catalog() -> list[DistrictInfo]:
     """Load the Karnataka district/taluk reference data from the seed CSV.
 
-    Returns:
+    Returns
+    -------
         List of DistrictInfo objects for all Karnataka districts/taluks.
 
-    Raises:
+    Raises
+    ------
         FileNotFoundError: If the districts catalog CSV is missing.
+
     """
     if not DISTRICTS_CATALOG_PATH.exists():
         raise FileNotFoundError(
@@ -203,8 +212,10 @@ def load_districts_catalog() -> list[DistrictInfo]:
 def get_crop_names() -> list[str]:
     """Get sorted list of all crop names in the catalog.
 
-    Returns:
+    Returns
+    -------
         Alphabetically sorted list of all crop names.
+
     """
     return sorted(load_crops_catalog().keys())
 
@@ -213,10 +224,13 @@ def get_crops_by_category(category: str) -> list[CropInfo]:
     """Get all crops in a given category.
 
     Args:
+    ----
         category: Category name (e.g. "Vegetable", "Fruit", "Cereal").
 
     Returns:
+    -------
         List of CropInfo objects matching the category.
+
     """
     return [
         crop for crop in load_crops_catalog().values()
@@ -228,10 +242,13 @@ def get_crops_by_state(state: str) -> list[CropInfo]:
     """Get all crops grown primarily in a given state.
 
     Args:
+    ----
         state: State name (e.g. "Karnataka", "Punjab").
 
     Returns:
+    -------
         List of CropInfo for crops where the state is a major producer.
+
     """
     return [
         crop for crop in load_crops_catalog().values()
@@ -245,8 +262,10 @@ def get_crop_validity_ranges() -> dict[str, dict[str, float]]:
     Used by anti_hallucination.py to validate model predictions.
     If a crop is not in the catalog, its predictions cannot be validated.
 
-    Returns:
+    Returns
+    -------
         Dict mapping crop_name → {yield_min, yield_max, price_min, price_max}.
+
     """
     return {
         name: {
@@ -265,8 +284,10 @@ def get_high_volatility_crops() -> list[str]:
     High-volatility crops must show P10/P50/P90 distribution on the
     dashboard — not just the average prediction.
 
-    Returns:
+    Returns
+    -------
         List of crop names with volatility_class == "HIGH".
+
     """
     return [
         name
@@ -278,8 +299,10 @@ def get_high_volatility_crops() -> list[str]:
 def get_mandya_crops() -> list[str]:
     """Get crop names that are grown in Mandya district specifically.
 
-    Returns:
+    Returns
+    -------
         List of crop names relevant for Mandya district.
+
     """
     mandya_entries = [
         d for d in load_districts_catalog()

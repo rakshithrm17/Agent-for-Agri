@@ -16,6 +16,7 @@ All logs rotate at 10 MB, keeping the last 5 backups.
 import logging
 import logging.handlers
 from pathlib import Path
+from typing import cast
 
 import structlog
 
@@ -32,10 +33,13 @@ def _create_rotating_handler(log_file: Path) -> logging.handlers.RotatingFileHan
     """Create a rotating file handler for a given log file path.
 
     Args:
+    ----
         log_file: Path to the log file to write to.
 
     Returns:
+    -------
         A configured RotatingFileHandler that writes JSON logs.
+
     """
     log_file.parent.mkdir(parents=True, exist_ok=True)
     handler = logging.handlers.RotatingFileHandler(
@@ -134,9 +138,12 @@ def get_logger(name: str) -> structlog.stdlib.BoundLogger:
     Use it like: logger = get_logger(__name__)
 
     Args:
+    ----
         name: The module name, typically __name__.
 
     Returns:
+    -------
         A bound structlog logger configured per the application settings.
+
     """
-    return structlog.get_logger(name)
+    return cast(structlog.stdlib.BoundLogger, structlog.get_logger(name))

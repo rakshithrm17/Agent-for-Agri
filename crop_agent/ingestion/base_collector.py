@@ -38,10 +38,12 @@ class BaseCollector(ABC):
     Subclasses must implement the collect() method.
     The base class handles retry logic, logging, and anomaly recording.
 
-    Attributes:
+    Attributes
+    ----------
         source_name: Unique identifier for this data source (e.g. "open_meteo").
         max_retries: Maximum number of retry attempts before marking as failed.
         retry_delay_seconds: Seconds to wait between retry attempts.
+
     """
 
     def __init__(
@@ -53,9 +55,11 @@ class BaseCollector(ABC):
         """Initialize the collector with source metadata and retry config.
 
         Args:
+        ----
             source_name: Unique identifier string for this source.
             max_retries: How many times to retry on failure before giving up.
             retry_delay_seconds: Seconds between retry attempts.
+
         """
         self.source_name = source_name
         self.max_retries = max_retries
@@ -65,8 +69,10 @@ class BaseCollector(ABC):
     def _build_http_session(self) -> requests.Session:
         """Build a requests Session with automatic retry on transient HTTP errors.
 
-        Returns:
+        Returns
+        -------
             A configured requests.Session with retry adapter mounted.
+
         """
         session = requests.Session()
         retry_strategy = Retry(
@@ -84,16 +90,20 @@ class BaseCollector(ABC):
         """Make a GET request with timeout. Raises on non-2xx response.
 
         Args:
+        ----
             url: The URL to request.
             params: Optional query parameters.
 
         Returns:
+        -------
             Parsed JSON response as a dictionary.
 
         Raises:
+        ------
             requests.HTTPError: On 4xx/5xx responses.
             requests.ConnectionError: On network errors.
             requests.Timeout: On request timeout.
+
         """
         response = self._session.get(
             url,
@@ -108,10 +118,13 @@ class BaseCollector(ABC):
         """Collect data for the given date and persist to the database.
 
         Args:
+        ----
             target_date: The date to collect data for.
 
         Returns:
+        -------
             Number of rows successfully written to the database.
+
         """
 
     def run(self, target_date: date) -> int:
@@ -121,10 +134,13 @@ class BaseCollector(ABC):
         It wraps collect() with retry logic and anomaly recording.
 
         Args:
+        ----
             target_date: The date to collect data for.
 
         Returns:
+        -------
             Number of rows written (0 if all retries failed).
+
         """
         last_error: Exception | None = None
 
@@ -174,8 +190,10 @@ class BaseCollector(ABC):
         This ensures no failure is silent — the dashboard will show a warning.
 
         Args:
+        ----
             issue_detail: Human-readable description of what failed.
             severity: Severity level — LOW | MEDIUM | HIGH.
+
         """
         try:
             with get_session() as session:

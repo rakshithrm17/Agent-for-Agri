@@ -29,7 +29,7 @@ from typing import Any
 
 from crop_agent.config.catalog import load_crops_catalog
 from crop_agent.config.logging_config import get_logger
-from crop_agent.config.settings import DEFAULT_DISTRICT, SOUTH_KARNATAKA_DRY_ZONE_TALUKS
+from crop_agent.config.settings import SOUTH_KARNATAKA_DRY_ZONE_TALUKS
 from crop_agent.database.connection import get_session
 from crop_agent.database.models import RawNdviSentinel
 from crop_agent.ingestion.base_collector import BaseCollector
@@ -150,10 +150,12 @@ class SatelliteCollector(BaseCollector):
       - All scenes in the window are too cloudy
       - GEE API is unavailable
 
-    Attributes:
+    Attributes
+    ----------
         district: District name for DB tagging.
         taluks: List of taluks to collect NDVI for.
         _gee_available: True if GEE is authenticated and project is set.
+
     """
 
     def __init__(
@@ -164,10 +166,12 @@ class SatelliteCollector(BaseCollector):
         """Initialize the satellite collector.
 
         Args:
+        ----
             district: Label for DB tagging (default: 'South Karnataka').
             taluks: List of taluks to collect. Defaults to all 46 South
                 Karnataka Dry Zone taluks (Zones 5, 6, 7). Coastal and
                 Malnad taluks are excluded — different agro-climatic zone.
+
         """
         super().__init__(source_name="satellite_ndvi")
         self.district = district
@@ -181,10 +185,13 @@ class SatelliteCollector(BaseCollector):
         Tries real GEE data first. Falls back to mock if unavailable.
 
         Args:
+        ----
             target_date: The sensing date to collect data for.
 
         Returns:
+        -------
             Number of NDVI records written.
+
         """
         if self._gee_available:
             logger.info(
@@ -208,13 +215,16 @@ class SatelliteCollector(BaseCollector):
         reduceRegion always has actual pixels to compute over.
 
         Args:
+        ----
             target_date: The sensing date.
 
         Returns:
+        -------
             Number of records written. Falls back to mock if GEE fails.
+
         """
         try:
-            import ee  # type: ignore[import-untyped]
+            import ee
 
             ee.Initialize(project=self._gee_project)
 
@@ -352,10 +362,13 @@ class SatelliteCollector(BaseCollector):
         """Generate and store seasonal-average NDVI as fallback.
 
         Args:
+        ----
             target_date: The sensing date.
 
         Returns:
+        -------
             Number of records written.
+
         """
         season = _MONTH_TO_SEASON.get(target_date.month, "Kharif")
         _, ndvi_mid, _ = _SEASONAL_NDVI_AVERAGES[season]
@@ -409,12 +422,14 @@ class SatelliteCollector(BaseCollector):
     def _check_gee_available() -> bool:
         """Check if Google Earth Engine API is installed and project ID is set.
 
-        Returns:
+        Returns
+        -------
             True if the earthengine-api package is installed AND
             GEE_PROJECT_ID is set in .env. False otherwise.
+
         """
         try:
-            import ee  # type: ignore[import-untyped]  # noqa: F401
+            import ee  # noqa: F401
             return bool(os.environ.get("GEE_PROJECT_ID"))
         except ImportError:
             return False
@@ -422,8 +437,10 @@ class SatelliteCollector(BaseCollector):
     def get_status(self) -> dict[str, Any]:
         """Return satellite data status for the dashboard.
 
-        Returns:
+        Returns
+        -------
             Dict with data_type, source, and farmer-facing message.
+
         """
         if self._gee_available:
             return {

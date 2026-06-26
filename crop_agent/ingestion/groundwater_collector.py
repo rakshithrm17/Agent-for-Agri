@@ -5,13 +5,13 @@ Maps spelling variations of districts/taluks to match application settings.
 """
 
 import os
-from datetime import date, datetime
+from datetime import date
+
 import pandas as pd
 import requests
-from sqlalchemy import text
 
 from crop_agent.config.logging_config import get_logger
-from crop_agent.config.settings import DISTRICT_TALUKS_MAP, TALUK_TO_DISTRICT
+from crop_agent.config.settings import DISTRICT_TALUKS_MAP
 from crop_agent.database.connection import get_session
 from crop_agent.database.models import RawGroundwaterLevel
 from crop_agent.ingestion.base_collector import BaseCollector
@@ -55,24 +55,29 @@ class GroundwaterCollector(BaseCollector):
 
     def collect(self, target_date: date) -> int:
         """Dummy implementation of abstract collect method to satisfy BaseCollector.
-        
+
         Args:
+        ----
             target_date: Unused target date.
-            
+
         Returns:
+        -------
             0
+
         """
         return 0
 
     def download_and_ingest(self) -> int:
         """Download and ingest historical groundwater data.
-        
-        Returns:
+
+        Returns
+        -------
             Number of rows written to the database.
+
         """
         # Ensure local raw_downloads directory exists
         os.makedirs(os.path.dirname(LOCAL_CACHE_PATH), exist_ok=True)
-        
+
         if not os.path.exists(LOCAL_CACHE_PATH):
             logger.info("groundwater.downloading_csv", url=CSV_URL)
             try:
@@ -100,7 +105,7 @@ class GroundwaterCollector(BaseCollector):
             "sl_no", "district", "taluk",
             "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"
         ]
-        
+
         data_df["district"] = data_df["district"].astype(str).str.strip()
         data_df["taluk"] = data_df["taluk"].astype(str).str.strip()
 
@@ -112,7 +117,7 @@ class GroundwaterCollector(BaseCollector):
                 # Find matching district in CSV (either matches config name directly, or maps to it)
                 csv_district_name = DISTRICT_CSV_MAP.get(district_config_name, district_config_name)
                 district_rows = data_df[data_df["district"].str.lower() == csv_district_name.lower()]
-                
+
                 if district_rows.empty:
                     logger.warning("groundwater.district_not_found_in_csv", district=csv_district_name)
                     continue
@@ -121,7 +126,7 @@ class GroundwaterCollector(BaseCollector):
                     # Find matching taluk in CSV
                     csv_taluk_name = TALUK_CSV_MAP.get(taluk_config_name, taluk_config_name)
                     taluk_row = district_rows[district_rows["taluk"].str.lower() == csv_taluk_name.lower()]
-                    
+
                     if taluk_row.empty:
                         logger.warning(
                             "groundwater.taluk_not_found_in_csv",
@@ -134,7 +139,7 @@ class GroundwaterCollector(BaseCollector):
                     for year in range(2013, 2023):
                         year_str = str(year)
                         val_raw = taluk_row[year_str].values[0]
-                        
+
                         try:
                             val = float(val_raw) if pd.notna(val_raw) and str(val_raw).strip() != "" else None
                         except (ValueError, TypeError):
@@ -150,7 +155,7 @@ class GroundwaterCollector(BaseCollector):
                             )
                             .first()
                         )
-                        
+
                         if not existing:
                             record = RawGroundwaterLevel(
                                 taluk=taluk_config_name,
@@ -162,6 +167,6 @@ class GroundwaterCollector(BaseCollector):
                             rows_inserted += 1
 
             session.commit()
-            
+
         logger.info("groundwater.ingest_complete", rows_inserted=rows_inserted)
         return rows_inserted

@@ -14,10 +14,10 @@ when pest/disease keywords are detected for specific crops.
 """
 
 import hashlib
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from typing import Any
 
-import feedparser  # type: ignore[import-untyped]
+import feedparser
 
 from crop_agent.config.logging_config import get_logger
 from crop_agent.config.settings import DD_KISAN_RSS_URL, DEFAULT_DISTRICT, IMD_RSS_URL
@@ -57,9 +57,11 @@ class NewsCollector(BaseCollector):
     Performs deduplication by hashing each article's URL and title.
     Only new articles are inserted — existing ones are skipped silently.
 
-    Attributes:
+    Attributes
+    ----------
         district: District to filter/tag news for.
         feeds: Dict of source_name → RSS URL to collect from.
+
     """
 
     def __init__(
@@ -70,8 +72,10 @@ class NewsCollector(BaseCollector):
         """Initialize the news collector.
 
         Args:
+        ----
             district: District name for DB tagging.
             feeds: Optional custom RSS feed mapping. Defaults to all configured feeds.
+
         """
         super().__init__(source_name="news_rss")
         self.district = district
@@ -84,10 +88,13 @@ class NewsCollector(BaseCollector):
         collected in full (last ~20 articles) and deduplicated by hash.
 
         Args:
+        ----
             target_date: The date context for this collection run.
 
         Returns:
+        -------
             Total number of new articles written to the database.
+
         """
         total_rows = 0
 
@@ -116,11 +123,14 @@ class NewsCollector(BaseCollector):
         """Parse and store all new articles from a single RSS feed.
 
         Args:
+        ----
             source_name: Identifier for this news source.
             feed_url: The RSS feed URL to parse.
 
         Returns:
+        -------
             Number of new articles inserted.
+
         """
         feed = feedparser.parse(feed_url)
 
@@ -150,11 +160,14 @@ class NewsCollector(BaseCollector):
         """Save a single RSS entry to the database if it is new.
 
         Args:
+        ----
             entry: A feedparser entry object.
             source_name: Source identifier string.
 
         Returns:
+        -------
             True if the article was newly inserted, False if already exists.
+
         """
         headline = getattr(entry, "title", "").strip()
         url = getattr(entry, "link", "").strip()
@@ -163,7 +176,7 @@ class NewsCollector(BaseCollector):
             return False
 
         # Deduplicate using a hash of source + URL + headline
-        article_hash = hashlib.md5(  # noqa: S324 — not for security, just dedup
+        hashlib.md5(  # noqa: S324 — not for security, just dedup
             f"{source_name}|{url}|{headline}".encode()
         ).hexdigest()
 
@@ -212,16 +225,19 @@ class NewsCollector(BaseCollector):
         """Extract and parse the publication date from an RSS entry.
 
         Args:
+        ----
             entry: A feedparser entry object.
 
         Returns:
+        -------
             UTC datetime or None if not available.
+
         """
         if hasattr(entry, "published_parsed") and entry.published_parsed:
             try:
                 import time
                 ts = time.mktime(entry.published_parsed)
-                return datetime.fromtimestamp(ts, tz=timezone.utc)
+                return datetime.fromtimestamp(ts, tz=UTC)
             except (ValueError, OverflowError, OSError):
                 pass
         return None
@@ -231,10 +247,13 @@ class NewsCollector(BaseCollector):
         """Detect the category of agricultural alert from article text.
 
         Args:
+        ----
             text: Lowercase article headline text.
 
         Returns:
+        -------
             Alert type string or None if uncategorized.
+
         """
         for alert_type, keywords in ALERT_KEYWORDS.items():
             if any(kw in text for kw in keywords):
@@ -246,10 +265,13 @@ class NewsCollector(BaseCollector):
         """Detect severity level from article headline text.
 
         Args:
+        ----
             text: Lowercase article headline text.
 
         Returns:
+        -------
             Severity string: HIGH, MEDIUM, or LOW.
+
         """
         if any(kw in text for kw in SEVERITY_HIGH_KEYWORDS):
             return "HIGH"
@@ -265,10 +287,13 @@ class NewsCollector(BaseCollector):
         A proper NER model could be added here in a future phase.
 
         Args:
+        ----
             text: Lowercase article headline text.
 
         Returns:
+        -------
             List of detected crop names (may be empty).
+
         """
         # Common crop name keywords to scan for
         crop_keywords: dict[str, list[str]] = {

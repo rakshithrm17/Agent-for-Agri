@@ -13,7 +13,6 @@ Design Rules:
 """
 
 import datetime
-from typing import Optional
 
 from sqlalchemy import (
     Boolean,
@@ -62,10 +61,10 @@ class RawMandiPrice(Base):
     district: Mapped[str] = mapped_column(String(128), nullable=False)
     state: Mapped[str] = mapped_column(String(128), nullable=False, default="Karnataka")
     price_inr_per_qtl: Mapped[float] = mapped_column(Float, nullable=False)
-    arrivals_qtl: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    min_price_inr: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    max_price_inr: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    modal_price_inr: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    arrivals_qtl: Mapped[float | None] = mapped_column(Float, nullable=True)
+    min_price_inr: Mapped[float | None] = mapped_column(Float, nullable=True)
+    max_price_inr: Mapped[float | None] = mapped_column(Float, nullable=True)
+    modal_price_inr: Mapped[float | None] = mapped_column(Float, nullable=True)
     source_id: Mapped[str] = mapped_column(String(64), nullable=False)  # e.g. "agmarknet", "apmc"
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -93,13 +92,13 @@ class RawWeatherDaily(Base):
     longitude: Mapped[float] = mapped_column(Float, nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
     source_name: Mapped[str] = mapped_column(String(64), nullable=False)  # "open_meteo" | "nasa_power"
-    rainfall_mm: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    temp_max_c: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    temp_min_c: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    humidity_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    wind_kmh: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    solar_radiation_wm2: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    evapotranspiration_mm: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    rainfall_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    temp_max_c: Mapped[float | None] = mapped_column(Float, nullable=True)
+    temp_min_c: Mapped[float | None] = mapped_column(Float, nullable=True)
+    humidity_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    wind_kmh: Mapped[float | None] = mapped_column(Float, nullable=True)
+    solar_radiation_wm2: Mapped[float | None] = mapped_column(Float, nullable=True)
+    evapotranspiration_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
@@ -126,9 +125,9 @@ class RawNdviSentinel(Base):
     sensing_date: Mapped[datetime.date] = mapped_column(DateTime, nullable=False)
     block_id: Mapped[str] = mapped_column(String(128), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    ndvi: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    evi: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    cloud_cover_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    ndvi: Mapped[float | None] = mapped_column(Float, nullable=True)
+    evi: Mapped[float | None] = mapped_column(Float, nullable=True)
+    cloud_cover_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
     satellite_pass: Mapped[str] = mapped_column(String(64), nullable=False)  # "sentinel2" | "modis"
     is_mock_data: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     ingested_at: Mapped[datetime.datetime] = mapped_column(
@@ -152,12 +151,12 @@ class RawSoilProperties(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     taluk: Mapped[str] = mapped_column(String(128), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    soil_type: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
-    ph: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    organic_carbon_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    clay_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    sand_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    silt_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    soil_type: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    ph: Mapped[float | None] = mapped_column(Float, nullable=True)
+    organic_carbon_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    clay_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    sand_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    silt_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
     source_id: Mapped[str] = mapped_column(String(64), nullable=False)  # "soilgrids" | "nbss_lup"
     collected_date: Mapped[datetime.date] = mapped_column(DateTime, nullable=False)
     ingested_at: Mapped[datetime.datetime] = mapped_column(
@@ -184,11 +183,11 @@ class RawCropYieldHistory(Base):
     year: Mapped[int] = mapped_column(Integer, nullable=False)
     season: Mapped[str] = mapped_column(String(32), nullable=False)  # Kharif | Rabi | Summer | Annual
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    taluk: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    taluk: Mapped[str | None] = mapped_column(String(128), nullable=True)
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
-    area_ha: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    production_tonnes: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    yield_qtl_per_ha: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    area_ha: Mapped[float | None] = mapped_column(Float, nullable=True)
+    production_tonnes: Mapped[float | None] = mapped_column(Float, nullable=True)
+    yield_qtl_per_ha: Mapped[float | None] = mapped_column(Float, nullable=True)
     source_id: Mapped[str] = mapped_column(String(64), nullable=False)  # "icrisat" | "karnataka_agri"
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -213,11 +212,11 @@ class RawInputCosts(Base):
     season: Mapped[str] = mapped_column(String(32), nullable=False)
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    seed_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    fertilizer_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    pesticide_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    labor_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    irrigation_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    seed_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    fertilizer_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pesticide_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    labor_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    irrigation_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
     source_id: Mapped[str] = mapped_column(String(64), nullable=False)
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -239,14 +238,14 @@ class RawNewsAlert(Base):
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    published_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime, nullable=True)
+    published_at: Mapped[datetime.datetime | None] = mapped_column(DateTime, nullable=True)
     source: Mapped[str] = mapped_column(String(128), nullable=False)
     headline: Mapped[str] = mapped_column(Text, nullable=False)
-    alert_type: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)  # pest | weather | disease | market
-    crop_mentioned: Mapped[Optional[str]] = mapped_column(String(256), nullable=True)
-    district_mentioned: Mapped[Optional[str]] = mapped_column(String(256), nullable=True)
-    severity: Mapped[Optional[str]] = mapped_column(String(32), nullable=True)  # LOW | MEDIUM | HIGH
-    url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    alert_type: Mapped[str | None] = mapped_column(String(64), nullable=True)  # pest | weather | disease | market
+    crop_mentioned: Mapped[str | None] = mapped_column(String(256), nullable=True)
+    district_mentioned: Mapped[str | None] = mapped_column(String(256), nullable=True)
+    severity: Mapped[str | None] = mapped_column(String(32), nullable=True)  # LOW | MEDIUM | HIGH
+    url: Mapped[str | None] = mapped_column(Text, nullable=True)
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
@@ -267,7 +266,7 @@ class RawGroundwaterLevel(Base):
     taluk: Mapped[str] = mapped_column(String(128), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
-    depth_m: Mapped[Optional[float]] = mapped_column(Float, nullable=True)  # depth in meters below ground level
+    depth_m: Mapped[float | None] = mapped_column(Float, nullable=True)  # depth in meters below ground level
     ingested_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
@@ -298,26 +297,26 @@ class FeatureWeatherSeasonal(Base):
     district: Mapped[str] = mapped_column(String(128), nullable=False)
 
     # Core rainfall features
-    rainfall_mm_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    rainfall_mm_june: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    rainfall_deviation_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    rainfall_normal_mm: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    rainfall_mm_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rainfall_mm_june: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rainfall_deviation_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rainfall_normal_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Temperature features
-    temp_max_avg_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    temp_min_avg_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    gdd_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    heat_stress_days: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    temp_max_avg_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    temp_min_avg_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    gdd_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    heat_stress_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Binary shock signals
-    drought_flag: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)   # 0 or 1
-    flood_flag: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)     # 0 or 1
+    drought_flag: Mapped[int | None] = mapped_column(Integer, nullable=True)   # 0 or 1
+    flood_flag: Mapped[int | None] = mapped_column(Integer, nullable=True)     # 0 or 1
 
     # Derived features
-    humidity_avg_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    sunshine_hours_avg: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    onset_monsoon_julian: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    dry_spell_max_days: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    humidity_avg_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    sunshine_hours_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    onset_monsoon_julian: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    dry_spell_max_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     built_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -344,15 +343,15 @@ class FeatureSatelliteSeasonal(Base):
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
     is_mock_data: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
-    ndvi_at_sowing: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_at_mid_season: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_at_pre_harvest: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_max_season: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_trend_slope: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    evi_mid_season: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    lst_avg_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    evapotranspiration_mm: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    crop_area_ha_district: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    ndvi_at_sowing: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_at_mid_season: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_at_pre_harvest: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_max_season: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_trend_slope: Mapped[float | None] = mapped_column(Float, nullable=True)
+    evi_mid_season: Mapped[float | None] = mapped_column(Float, nullable=True)
+    lst_avg_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    evapotranspiration_mm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    crop_area_ha_district: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     built_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -380,17 +379,17 @@ class FeatureMarketSeasonal(Base):
     district: Mapped[str] = mapped_column(String(128), nullable=False)
 
     # Safe input features (no data leakage — all pre-sowing or lagged)
-    mandi_price_3m_before_sowing: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    mandi_price_last_year_harvest: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    price_volatility_3yr: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    price_seasonality_index: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    msp_current_year: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    arrivals_district_last_month: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    arrivals_yoy_change_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    export_demand_flag: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)  # 0 or 1
+    mandi_price_3m_before_sowing: Mapped[float | None] = mapped_column(Float, nullable=True)
+    mandi_price_last_year_harvest: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_volatility_3yr: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_seasonality_index: Mapped[float | None] = mapped_column(Float, nullable=True)
+    msp_current_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    arrivals_district_last_month: Mapped[float | None] = mapped_column(Float, nullable=True)
+    arrivals_yoy_change_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    export_demand_flag: Mapped[int | None] = mapped_column(Integer, nullable=True)  # 0 or 1
 
     # TARGET variable — used only for model training, NEVER as an input feature
-    mandi_price_at_harvest: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    mandi_price_at_harvest: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     built_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -417,56 +416,56 @@ class FeatureMaster(Base):
     season: Mapped[str] = mapped_column(String(32), nullable=False)
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    taluk: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    taluk: Mapped[str | None] = mapped_column(String(128), nullable=True)
 
     # Location features
-    latitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    longitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    elevation_m: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    soil_type: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
-    soil_ph: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    soil_organic_carbon_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    clay_percent: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    irrigation_type: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
-    distance_to_mandi_km: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    elevation_m: Mapped[float | None] = mapped_column(Float, nullable=True)
+    soil_type: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    soil_ph: Mapped[float | None] = mapped_column(Float, nullable=True)
+    soil_organic_carbon_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    clay_percent: Mapped[float | None] = mapped_column(Float, nullable=True)
+    irrigation_type: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    distance_to_mandi_km: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Weather features (from features_weather_seasonal)
-    rainfall_mm_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    rainfall_deviation_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    temp_max_avg_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    temp_min_avg_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    gdd_seasonal: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    drought_flag: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    flood_flag: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    heat_stress_days: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    onset_monsoon_julian: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    dry_spell_max_days: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    rainfall_mm_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rainfall_deviation_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    temp_max_avg_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    temp_min_avg_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    gdd_seasonal: Mapped[float | None] = mapped_column(Float, nullable=True)
+    drought_flag: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    flood_flag: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    heat_stress_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    onset_monsoon_julian: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    dry_spell_max_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Satellite features (from features_satellite_seasonal)
-    ndvi_at_sowing: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_at_mid_season: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_at_pre_harvest: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    ndvi_trend_slope: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    ndvi_at_sowing: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_at_mid_season: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_at_pre_harvest: Mapped[float | None] = mapped_column(Float, nullable=True)
+    ndvi_trend_slope: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Crop-specific features
-    crop_duration_days: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    is_irrigated: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    sowing_date_julian: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    crop_duration_days: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    is_irrigated: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    sowing_date_julian: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Market features (safe — no leakage)
-    mandi_price_3m_before_sowing: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    price_volatility_3yr: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    msp_current_year: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    arrivals_yoy_change_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    mandi_price_3m_before_sowing: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_volatility_3yr: Mapped[float | None] = mapped_column(Float, nullable=True)
+    msp_current_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    arrivals_yoy_change_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Input cost features
-    total_input_cost_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    fertilizer_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    labor_inr_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    total_input_cost_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    fertilizer_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    labor_inr_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Target variables (filled in from yield history / actual prices)
-    actual_yield_qtl_per_acre: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    actual_price_inr_per_qtl: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    actual_yield_qtl_per_acre: Mapped[float | None] = mapped_column(Float, nullable=True)
+    actual_price_inr_per_qtl: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     built_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -490,8 +489,8 @@ class FeatureImportanceLog(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     model_version: Mapped[str] = mapped_column(String(64), nullable=False)
     feature_name: Mapped[str] = mapped_column(String(128), nullable=False)
-    importance_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    shap_value: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    importance_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    shap_value: Mapped[float | None] = mapped_column(Float, nullable=True)
     included_in_model: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     run_date: Mapped[datetime.date] = mapped_column(DateTime, nullable=False)
     logged_at: Mapped[datetime.datetime] = mapped_column(
@@ -520,18 +519,18 @@ class ModelEvaluationLog(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     model_type: Mapped[str] = mapped_column(String(64), nullable=False)  # "yield" | "price" | "rank"
-    crop: Mapped[Optional[str]] = mapped_column(String(64), nullable=True)
+    crop: Mapped[str | None] = mapped_column(String(64), nullable=True)
     train_end_year: Mapped[int] = mapped_column(Integer, nullable=False)
     predict_year: Mapped[int] = mapped_column(Integer, nullable=False)
-    yield_rmse: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    yield_mape: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    price_mape: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    rank_accuracy: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    yield_rmse: Mapped[float | None] = mapped_column(Float, nullable=True)
+    yield_mape: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_mape: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rank_accuracy: Mapped[float | None] = mapped_column(Float, nullable=True)
     model_version: Mapped[str] = mapped_column(String(64), nullable=False)
-    random_seed: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
-    feature_count: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    random_seed: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    feature_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
     passed_threshold: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     run_date: Mapped[datetime.date] = mapped_column(DateTime, nullable=False)
     logged_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
@@ -556,40 +555,40 @@ class PredictionCurrent(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    taluk: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    taluk: Mapped[str | None] = mapped_column(String(128), nullable=True)
     season: Mapped[str] = mapped_column(String(32), nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
 
     # Yield prediction
-    pred_yield_qtl: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    pred_yield_lower: Mapped[Optional[float]] = mapped_column(Float, nullable=True)   # confidence interval low
-    pred_yield_upper: Mapped[Optional[float]] = mapped_column(Float, nullable=True)   # confidence interval high
+    pred_yield_qtl: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pred_yield_lower: Mapped[float | None] = mapped_column(Float, nullable=True)   # confidence interval low
+    pred_yield_upper: Mapped[float | None] = mapped_column(Float, nullable=True)   # confidence interval high
 
     # Price prediction (P10 / P50 / P90)
-    pred_price_p10: Mapped[Optional[float]] = mapped_column(Float, nullable=True)    # pessimistic
-    pred_price_p50: Mapped[Optional[float]] = mapped_column(Float, nullable=True)    # expected
-    pred_price_p90: Mapped[Optional[float]] = mapped_column(Float, nullable=True)    # optimistic
+    pred_price_p10: Mapped[float | None] = mapped_column(Float, nullable=True)    # pessimistic
+    pred_price_p50: Mapped[float | None] = mapped_column(Float, nullable=True)    # expected
+    pred_price_p90: Mapped[float | None] = mapped_column(Float, nullable=True)    # optimistic
 
     # Profit prediction
-    pred_profit: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    profit_in_bad_year: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    profit_in_good_year: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    break_even_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    years_profitable_of_5: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    pred_profit: Mapped[float | None] = mapped_column(Float, nullable=True)
+    profit_in_bad_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    profit_in_good_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    break_even_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    years_profitable_of_5: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Risk scoring
-    risk_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)        # 0.0 to 1.0
-    risk_level: Mapped[Optional[str]] = mapped_column(String(16), nullable=True)     # LOW | MEDIUM | HIGH
-    confidence_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)    # 0 to 100
+    risk_score: Mapped[float | None] = mapped_column(Float, nullable=True)        # 0.0 to 1.0
+    risk_level: Mapped[str | None] = mapped_column(String(16), nullable=True)     # LOW | MEDIUM | HIGH
+    confidence_pct: Mapped[float | None] = mapped_column(Float, nullable=True)    # 0 to 100
 
     # Ranking
-    rank: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    rank: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     # Data freshness — dashboard shows this to farmer
     generated_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
-    data_freshness_hrs: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    data_freshness_hrs: Mapped[float | None] = mapped_column(Float, nullable=True)
 
 
 class PredictionHistory(Base):
@@ -608,22 +607,22 @@ class PredictionHistory(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     crop: Mapped[str] = mapped_column(String(64), nullable=False)
     district: Mapped[str] = mapped_column(String(128), nullable=False)
-    taluk: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
+    taluk: Mapped[str | None] = mapped_column(String(128), nullable=True)
     season: Mapped[str] = mapped_column(String(32), nullable=False)
     year: Mapped[int] = mapped_column(Integer, nullable=False)
-    pred_yield_qtl: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    pred_price_p50: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    pred_profit: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    risk_score: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    confidence_pct: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    pred_yield_qtl: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pred_price_p50: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pred_profit: Mapped[float | None] = mapped_column(Float, nullable=True)
+    risk_score: Mapped[float | None] = mapped_column(Float, nullable=True)
+    confidence_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     # Filled after harvest with real observed values
-    actual_yield: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    actual_price: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    actual_profit: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    actual_yield: Mapped[float | None] = mapped_column(Float, nullable=True)
+    actual_price: Mapped[float | None] = mapped_column(Float, nullable=True)
+    actual_profit: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     generated_at: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=False)
-    actuals_filled_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime, nullable=True)
+    actuals_filled_at: Mapped[datetime.datetime | None] = mapped_column(DateTime, nullable=True)
 
 
 class AnomalyLog(Base):
@@ -643,19 +642,19 @@ class AnomalyLog(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     table_name: Mapped[str] = mapped_column(String(128), nullable=False)
-    column_name: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
-    row_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    column_name: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    row_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     issue_type: Mapped[str] = mapped_column(String(64), nullable=False)   # range_violation | null_excess | cross_source_mismatch | ingestion_failure
     issue_detail: Mapped[str] = mapped_column(Text, nullable=False)
-    source_a_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    source_b_value: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    source_a_value: Mapped[str | None] = mapped_column(Text, nullable=True)
+    source_b_value: Mapped[str | None] = mapped_column(Text, nullable=True)
     severity: Mapped[str] = mapped_column(String(16), nullable=False, default="MEDIUM")  # LOW | MEDIUM | HIGH
     flagged_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )
     resolved: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    resolved_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime, nullable=True)
-    resolved_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    resolved_at: Mapped[datetime.datetime | None] = mapped_column(DateTime, nullable=True)
+    resolved_note: Mapped[str | None] = mapped_column(Text, nullable=True)
 
 
 class AgentRunLog(Base):
@@ -676,12 +675,12 @@ class AgentRunLog(Base):
     tasks_total: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     tasks_success: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     tasks_failed: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    data_freshness_hrs: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    data_freshness_hrs: Mapped[float | None] = mapped_column(Float, nullable=True)
     predictions_generated: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     anomalies_flagged: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    run_duration_sec: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    run_duration_sec: Mapped[float | None] = mapped_column(Float, nullable=True)
     run_status: Mapped[str] = mapped_column(String(32), nullable=False, default="UNKNOWN")  # SUCCESS | PARTIAL | FAILED
-    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     logged_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, nullable=False, server_default=func.now()
     )

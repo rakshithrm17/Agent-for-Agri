@@ -23,8 +23,10 @@ def init_db() -> None:
     Safe to run multiple times — uses CREATE TABLE IF NOT EXISTS semantics
     via SQLAlchemy's create_all(checkfirst=True).
 
-    Raises:
+    Raises
+    ------
         SystemExit: If the database connection cannot be established.
+
     """
     logger.info("database.init_start")
 
