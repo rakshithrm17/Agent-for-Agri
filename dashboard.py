@@ -996,6 +996,34 @@ elif page == "🚰 Groundwater":
 
         # Advisory box
         st.markdown(f'<div class="signal signal-{status_color}">{advice}</div>', unsafe_allow_html=True)
+
+        # Borewell Pump & Safety Warning
+        warning_content = ""
+        if latest_depth > 12.0:
+            warning_content = (
+                f"<li><b>Submersible Pump Alert:</b> With a water table depth of <b>{latest_depth:.2f} meters (approx. {latest_depth*3.281:.1f} feet)</b>, standard openwell and shallow submersible pumps will experience severe suction loss and motor strain.</li>"
+                f"<li><b>Dry Run / Air Lock Risk:</b> If you have an older shallow borewell (&lt; 150 feet deep), it is at high risk of running dry during peak summer.</li>"
+                f"<li><b>Action Plan:</b> Install a dry-run sensor or auto-cutoff switch on your pump starter immediately to prevent motor burnout (saving ₹5,000 to ₹7,000 in rewinding costs). Consider switching to drip irrigation or laser leveling to stretch water availability by 35%.</li>"
+            )
+        elif latest_depth > 8.0:
+            warning_content = (
+                f"<li><b>Drawdown Warning:</b> The water table fluctuates seasonally by up to 4 meters. During peak irrigation months, multiple pumps running in adjacent fields will draw down your well level rapidly.</li>"
+                f"<li><b>Action Plan:</b> Do not run pumps for more than 4 consecutive hours. Schedule pumping at night to reduce evaporation losses, and avoid sinking new borewells within 200 meters of existing ones.</li>"
+            )
+        else:
+            warning_content = (
+                f"<li><b>Optimal Pumping Conditions:</b> Standard submersible pumps are operating at high efficiency (low pressure head).</li>"
+                f"<li><b>Action Plan:</b> Maintain this stability by implementing farm pond harvesting and avoiding flood irrigation. Consider installing a low-cost flow meter to monitor daily water usage.</li>"
+            )
+
+        st.markdown(f"""
+        <div class="card">
+            <h3 style="margin-top:0; color:#1e293b; font-size:16px">⚠️ Borewell Pump Yield & Safety Warning</h3>
+            <ul style="margin-bottom:0; padding-left:20px; font-size:13.5px; color:#475569; line-height:1.6">
+                {warning_content}
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
         st.markdown("")
 
         col1, col2 = st.columns([3, 2])
@@ -1348,12 +1376,40 @@ elif page == "📅 Crop Explorer":
                 <div style="font-size:11px; color:#065f46; margin-top:4px">Based on recovery rate of {recovery_rate:.2f}%</div>
             </div>""", unsafe_allow_html=True)
             
-            st.markdown("""
-            **⚠️ Mill Waiting List Alert (Mandya Region):**
-            - **Current Situation:** Sugar mills (like Mysore Sugar Company - MySugar) are facing long crushing queues due to high local acreage (105,000 acres).
-            - **Delay Risk:** Waiting time for cutting permits is currently **60+ Days**. Sugarcane left standing beyond 12 months begins to dry up, lowering recovery rates and total weight.
-            - **Actionable Advice:** Stagger your planting schedule across different months to stagger harvesting. Coordinate early with local harvest contractors and mill representatives.
-            """)
+            st.markdown("**⚠️ Mill Waiting List Alert (Mandya Region):**")
+            mill_choice = st.selectbox(
+                "Select Sugar Mill to Check Backlog:",
+                ["MySugar (Mandya)", "Chamundeshwari Sugars (Maddur)", "NSL Sugars (Koppa)"],
+                key="sugar_mill_selectbox"
+            )
+            if mill_choice == "MySugar (Mandya)":
+                st.markdown("""
+                <div class="signal signal-red" style="font-size:13.5px; display:block">
+                    🔴 <b>MySugar Backlog Status: CRITICAL</b><br>
+                    • <b>Cutting Permit Delay:</b> 70-80 Days. <br>
+                    • <b>Estimated Weight Loss:</b> 8% to 12% (due to dry cane/sucrose inversion). <br>
+                    • <b>Advice:</b> Submit your cutting request immediately at 11 months to secure a slot by month 12. Stagger harvesting where possible.
+                </div>
+                """, unsafe_allow_html=True)
+            elif mill_choice == "Chamundeshwari Sugars (Maddur)":
+                st.markdown("""
+                <div class="signal signal-yellow" style="font-size:13.5px; display:block">
+                    🟡 <b>Chamundeshwari Backlog Status: MODERATE</b><br>
+                    • <b>Cutting Permit Delay:</b> 40-50 Days. <br>
+                    • <b>Estimated Weight Loss:</b> 4% to 6%. <br>
+                    • <b>Advice:</b> Stagger irrigation schedules to slow down excessive cane growth if cutting permits are delayed.
+                </div>
+                """, unsafe_allow_html=True)
+            else: # NSL Sugars
+                st.markdown("""
+                <div class="signal signal-green" style="font-size:13.5px; display:block">
+                    🟢 <b>NSL Sugars Backlog Status: STABLE / NORMAL</b><br>
+                    • <b>Cutting Permit Delay:</b> 10-15 Days. <br>
+                    • <b>Estimated Weight Loss:</b> Less than 2%. <br>
+                    • <b>Advice:</b> Standard harvesting plan applies. Ensure logistics and truck transport are locked in.
+                </div>
+                """, unsafe_allow_html=True)
+            st.markdown("")
             
         elif sel_crop_exp == "Tomato":
             st.markdown("### 🍅 Tomato Volatility & Supply Alerts")
@@ -1376,6 +1432,34 @@ elif page == "📅 Crop Explorer":
               - **If already planted:** Consider harvesting slightly early (mature green stage) to beat the supply surge, or look into cold storage options.
               - **If not yet planted:** Delay planting tomatoes by 20 days to target the post-festival price gap, or switch to leafy greens (Coriander/Methi) for quick, stable cash.
             """)
+
+            st.markdown("#### ⏳ Volatility Arbitrage Calculator")
+            tomato_delay = st.selectbox(
+                "Simulate delaying your planting date to avoid supply surges:",
+                ["Delay by 0 days (Harvest during peak surge)", "Delay by 15 days (Post-surge start)", "Delay by 30 days (Post-surge gap)"],
+                key="tomato_delay_selectbox"
+            )
+            if tomato_delay == "Delay by 0 days (Harvest during peak surge)":
+                st.markdown("""
+                <div class="signal signal-red" style="font-size:13px; display:block">
+                    🔴 <b>Expected Harvest Price: ₹600 - ₹900 / qtl</b><br>
+                    Harvesting will align with the peak arrival window from Kolar. High risk of selling below production cost (₹1,000/qtl).
+                </div>
+                """, unsafe_allow_html=True)
+            elif tomato_delay == "Delay by 15 days (Post-surge start)":
+                st.markdown("""
+                <div class="signal signal-yellow" style="font-size:13px; display:block">
+                    🟡 <b>Expected Harvest Price: ₹1,500 - ₹2,000 / qtl</b><br>
+                    A 15-day delay pushes your harvest past Kolar's first wave, targeting higher local retail pricing. Net profit expected: ₹15,000/acre.
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div class="signal signal-green" style="font-size:13px; display:block">
+                    🟢 <b>Expected Harvest Price: ₹3,500 - ₹4,500 / qtl</b><br>
+                    A 30-day delay targets the post-festival price gap. High probability of strong market rate arbitrage. Net profit expected: ₹40,000+/acre.
+                </div>
+                """, unsafe_allow_html=True)
             
         elif sel_crop_exp == "Ragi":
             st.markdown("### 🌾 Ragi Dual-Income & Fodder Cushion")
@@ -1413,6 +1497,16 @@ elif page == "📅 Crop Explorer":
                 </div>
             </div>""", unsafe_allow_html=True)
             
+            cost_of_cultivation = 9500.0
+            hedge_ratio = (fodder_rev / cost_of_cultivation) * 100
+            
+            st.markdown(f"""
+            <div style="background:#eff6ff; border-radius:10px; padding:12px 14px; border-left:4px solid #3b82f6; margin-bottom:12px; font-size:13.5px">
+                <b>🐄 Fodder Risk Hedge Ratio:</b> <span style="color:#1d4ed8; font-weight:700">{hedge_ratio:.1f}%</span> of cultivation costs. <br>
+                <span style="font-size:12.5px; color:#4b5563">Your straw fodder revenue covers <b>{hedge_ratio:.1f}%</b> of the total crop production cost (₹{cost_of_cultivation:,.0f}/acre). Even if grain prices drop to zero, you recover a significant part of your input investment!</span>
+            </div>
+            """, unsafe_allow_html=True)
+
             st.markdown("""
             - **Resilience Factor:** 🟢 **High Stability.** In dry years, when water for grain filling is scarce, Ragi still yields high-quality straw. Bamul dairy cooperatives maintain high demand for ragi straw.
             - **Recommendation:** Always store Ragi straw in dry conditions (Lakkode) to preserve nutrition. Fodder can be sold immediately post-harvest or stored for summer demand when prices double.
